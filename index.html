@@ -40,55 +40,76 @@
         .lace-top { top: 0; transform: rotate(180deg); }
         .lace-bottom { bottom: 0; }
 
-        /* --- ENVELOPPE --- */
+        /* --- ENVELOPPE RÉPONSIVE --- */
         #envelope-wrapper {
             position: fixed;
             top: 0; left: 0; width: 100%; height: 100%;
             background: #f2efea;
             display: flex;
+            flex-direction: column;
             justify-content: center;
             align-items: center;
             z-index: 9999;
             transition: opacity 1.5s ease;
+            padding: 20px;
         }
 
         .envelope {
             position: relative;
-            width: 550px; height: 380px;
+            width: 100%;
+            max-width: 550px; /* Taille max bureau */
+            aspect-ratio: 550 / 380; /* Garde les proportions de l'enveloppe */
             background: #ffffff;
-            box-shadow: 0 50px 100px rgba(0,0,0,0.08);
+            box-shadow: 0 30px 60px rgba(0,0,0,0.1);
             cursor: pointer;
             perspective: 1500px;
-            max-width: 90vw;
         }
 
+        /* Rabat de l'enveloppe corrigé pour être fluide */
         .envelope::before {
             content: "";
             position: absolute;
-            top: 0; left: 0; width: 0; height: 0;
-            border-top: 210px solid #ffffff;
-            border-left: 275px solid transparent;
+            top: 0; left: 0; width: 100%; height: 0;
+            border-top: 200px solid #ffffff; /* Ajusté dynamiquement via CSS si besoin, mais fonctionne bien en responsive */
+            border-left: 275px solid transparent; /* Sera écrasé par le calcul fluide ci-dessous */
             border-right: 275px solid transparent;
             z-index: 4;
             transform-origin: top;
             transition: transform 1.2s cubic-bezier(0.4, 0, 0.2, 1);
+            
+            /* Calcul pour rendre le triangle du rabat fluide */
+            border-left-width: calc(50vw - 20px);
+            border-right-width: calc(50vw - 20px);
+            border-top-width: calc(35vw);
+        }
+        
+        /* Correction du rabat sur grand écran pour pas qu'il soit géant */
+        @media (min-width: 600px) {
+            .envelope::before {
+                border-left-width: 275px;
+                border-right-width: 275px;
+                border-top-width: 210px;
+            }
         }
 
         .envelope.open::before { transform: rotateX(180deg); z-index: 1; }
 
         .seal {
             position: absolute;
-            top: 175px; left: 50%;
-            transform: translateX(-50%);
-            width: 85px; height: 85px;
+            top: 50%; left: 50%;
+            transform: translate(-50%, -50%);
+            width: 70px; height: 70px;
             background: radial-gradient(circle at 30% 30%, #d4af37, #b38b4d);
             border-radius: 50%;
             z-index: 5;
             display: flex; justify-content: center; align-items: center;
-            color: white; font-family: 'Cinzel'; font-size: 1.6rem;
+            color: white; font-family: 'Cinzel'; font-size: 1.4rem;
             box-shadow: 0 10px 20px rgba(0,0,0,0.2);
             overflow: hidden;
+            transition: 0.5s;
         }
+
+        .envelope.open .seal { opacity: 0; transform: translate(-50%, -50%) scale(0); }
 
         .seal::after {
             content: "";
@@ -109,7 +130,7 @@
             display: none;
             width: 95%; max-width: 650px;
             background: var(--ivoire);
-            padding: 60px 10px; /* Réduit pour mobile */
+            padding: 60px 10px;
             text-align: center;
             position: relative;
             box-shadow: 0 40px 120px rgba(0,0,0,0.05);
@@ -126,7 +147,7 @@
         .gold-border { border: 2px solid var(--gold); padding: 10px; position: relative; }
         .inner-frame { border: 1px solid var(--gold); padding: 40px 5px; }
 
-        .promise-text { font-family: 'Cinzel'; font-size: 0.7rem; letter-spacing: 5px; text-transform: uppercase; margin-bottom: 5px; }
+        .promise-text { font-family: 'Cinzel'; font-size: 0.65rem; letter-spacing: 4px; text-transform: uppercase; margin-bottom: 5px; }
 
         .script-names {
             font-family: 'Pinyon Script', cursive;
@@ -137,59 +158,54 @@
             background-size: 200% auto;
             animation: goldShine 4s linear infinite;
             margin: 10px 0 25px 0;
-            white-space: nowrap; display: flex; justify-content: center; align-items: center; gap: 12px;
-            padding: 0 10px;
+            white-space: nowrap; display: flex; justify-content: center; align-items: center; gap: 8px;
+            padding: 0 5px;
         }
 
         @keyframes goldShine { to { background-position: 200% center; } }
 
-        /* --- PHOTO CORRIGÉE POUR MOBILE --- */
+        /* --- PHOTO RÉPONSIVE --- */
         .photo-container {
             position: relative;
             width: 100%;
-            max-width: 320px; /* Taille max sur grand écran */
+            max-width: 300px;
             aspect-ratio: 1 / 1;
             margin: 30px auto;
             display: flex; justify-content: center; align-items: center;
         }
 
         .couple-photo {
-            width: 95%; /* S'adapte à la largeur du container */
-            height: 95%;
-            object-fit: cover; 
-            border-radius: 50%;
+            width: 90%; height: 90%;
+            object-fit: cover; border-radius: 50%;
             border: 2px solid var(--gold);
-            padding: 5px;
-            background: white;
-            z-index: 2;
+            padding: 4px; background: white; z-index: 2;
         }
 
         /* --- PROGRAMME --- */
-        .event-step { margin-bottom: 20px; padding: 0 10px; }
-        .event-time { font-family: 'Cinzel'; font-weight: 700; color: var(--gold); font-size: 1.1rem; }
-        
+        .event-step { margin-bottom: 20px; padding: 0 5px; }
+        .event-time { font-family: 'Cinzel'; font-weight: 700; color: var(--gold); font-size: 1rem; }
         .maps-link {
             display: inline-block; color: var(--deep-black); text-decoration: none;
-            font-family: 'Cinzel'; font-size: 0.85rem; margin-top: 5px;
+            font-family: 'Cinzel'; font-size: 0.8rem; margin-top: 5px;
             border-bottom: 1px solid rgba(179, 139, 77, 0.4); font-weight: 500;
         }
 
         .cal-btn {
-            display: inline-block; margin-top: 25px; padding: 10px 20px;
+            display: inline-block; margin-top: 20px; padding: 10px 15px;
             border: 1px solid var(--gold); color: var(--gold);
-            text-decoration: none; font-size: 0.7rem; font-family: 'Cinzel';
+            text-decoration: none; font-size: 0.65rem; font-family: 'Cinzel';
             letter-spacing: 2px; text-transform: uppercase;
         }
 
         /* --- RSVP --- */
         .thanks-msg {
-            font-family: 'Montserrat'; font-style: italic; font-size: 0.8rem;
-            margin: 40px 10px 15px; color: var(--gold);
+            font-family: 'Montserrat'; font-style: italic; font-size: 0.75rem;
+            margin: 30px 10px 15px; color: var(--gold);
         }
 
-        .rsvp-form { max-width: 300px; margin: 0 auto; }
-        select, input { width: 100%; padding: 15px; border: none; border-bottom: 1px solid #ccc; background: transparent; text-align-last: center; margin-bottom: 15px; outline: none; font-family: 'Montserrat'; font-size: 0.85rem; }
-        button { width: 100%; padding: 18px; background: var(--gold); color: white; border: none; letter-spacing: 5px; text-transform: uppercase; font-weight: 700; cursor: pointer; }
+        .rsvp-form { max-width: 280px; margin: 0 auto; }
+        select, input { width: 100%; padding: 14px; border: none; border-bottom: 1px solid #ccc; background: transparent; text-align-last: center; margin-bottom: 15px; outline: none; font-family: 'Montserrat'; font-size: 0.8rem; }
+        button { width: 100%; padding: 16px; background: var(--gold); color: white; border: none; letter-spacing: 4px; text-transform: uppercase; font-weight: 700; cursor: pointer; font-size: 0.8rem; }
 
         .gold-dust { position: fixed; border-radius: 50%; pointer-events: none; z-index: -1; animation: drift linear infinite; }
         @keyframes drift { to { transform: translateY(110vh) rotate(360deg); opacity: 0; } }
@@ -205,7 +221,7 @@
     <div class="envelope" id="envelope" onclick="openInvite()">
         <div class="seal">FT</div>
     </div>
-    <p style="position: absolute; bottom: 10%; color: var(--gold); letter-spacing: 8px; font-family: 'Cinzel'; font-size: 0.7rem;">OUVRIR L'INVITATION</p>
+    <p style="margin-top: 30px; color: var(--gold); letter-spacing: 6px; font-family: 'Cinzel'; font-size: 0.65rem; text-align: center;">CLIQUEZ POUR OUVRIR</p>
 </div>
 
 <main id="main-content">
@@ -214,7 +230,7 @@
 
     <div class="gold-border">
         <div class="inner-frame">
-            <p style="font-style: italic; margin-bottom: 10px; font-size: 0.9rem;">L'union de deux âmes</p>
+            <p style="font-style: italic; margin-bottom: 10px; font-size: 0.85rem;">L'union de deux âmes</p>
             <p class="promise-text">Jusqu'à notre dernier souffle</p>
             <h1 class="script-names">Farah <span style="font-size: 0.7em;">❤</span> Tarek</h1>
             
@@ -222,11 +238,11 @@
                 <img src="notre-photo.jpg" alt="Farah & Tarek" class="couple-photo">
             </div>
             
-            <p style="font-family: 'Cinzel'; font-weight: 700; font-size: 1rem; margin-bottom: 25px;">Samedi 11 Avril 2026</p>
+            <p style="font-family: 'Cinzel'; font-weight: 700; font-size: 0.95rem; margin-bottom: 25px;">Samedi 11 Avril 2026</p>
             
             <div class="event-step">
                 <span class="event-time">09:45</span><br>
-                <a href="https://maps.google.com/?q=Mairie+Asnieres-sur-Seine" target="_blank" class="maps-link">
+                <a href="https://www.google.com/maps/dir/?api=1&destination=Mairie+d'Asnières-sur-Seine" target="_blank" class="maps-link">
                     Cérémonie • Mairie d'Asnières 📍
                 </a>
             </div>
@@ -234,11 +250,11 @@
             <div class="event-step">
                 <span class="event-time">13:45</span><br>
                 <a href="https://share.google/ATM6Xe4TJUj33lnAm" target="_blank" class="maps-link">
-                    Déjeuner • Restaurant L'Arganier 🍽️
+                    Déjeuner • L'Arganier Paris 🍽️
                 </a>
             </div>
             
-            <div id="timer" style="margin: 25px 0; font-family: 'Cinzel'; letter-spacing: 3px; font-size: 1.2rem; color: var(--gold); font-weight: 700;"></div>
+            <div id="timer" style="margin: 20px 0; font-family: 'Cinzel'; letter-spacing: 3px; font-size: 1.1rem; color: var(--gold); font-weight: 700;"></div>
 
             <a href="https://www.google.com/calendar/render?action=TEMPLATE&text=Mariage+Farah+et+Tarek&dates=20260411T074500Z/20260411T160000Z&details=09:45+Mairie+Asnieres%0A13:45+Dejeuner+L'Arganier&location=L'Arganier+Paris" target="_blank" class="cal-btn">
                 Ajouter à l'agenda
@@ -257,7 +273,7 @@
                     <div id="guest-details" style="display:none;">
                         <select id="count" name="Nombre de personnes">
                             <option value="1">Moi uniquement</option>
-                            <option value="2">Accompagné(e) (2 personnes)</option>
+                            <option value="2">Accompagné(e) (2 pers.)</option>
                             <option value="3">3 personnes</option>
                             <option value="4">4 personnes</option>
                             <option value="5">5 personnes</option>
