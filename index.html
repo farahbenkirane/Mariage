@@ -12,7 +12,8 @@
             --gold: #b38b4d;
             --gold-gradient: linear-gradient(45deg, #b38b4d 25%, #e2c275 50%, #b38b4d 75%);
             --deep-black: #1a1a1a;
-            --paper-texture: url('https://www.transparenttextures.com/patterns/natural-paper.png');
+            /* Texture martelée / grainée */
+            --hammered-texture: url('https://www.transparenttextures.com/patterns/natural-paper.png');
         }
 
         * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -24,10 +25,10 @@
             justify-content: center;
             align-items: center;
             min-height: 100vh;
-            overflow-x: hidden;
+            overflow: hidden;
         }
 
-        /* --- ENVELOPPE BLANCHE TEXTURÉE --- */
+        /* --- ENVELOPPE MARTELÉE --- */
         #envelope-wrapper {
             position: fixed;
             top: 0; left: 0; width: 100%; height: 100%;
@@ -47,83 +48,86 @@
             max-width: 500px;
             aspect-ratio: 3 / 2;
             background-color: #ffffff;
-            background-image: var(--paper-texture); /* Texture papier réel */
+            background-image: var(--hammered-texture);
             box-shadow: 0 40px 80px rgba(0,0,0,0.15);
             cursor: pointer;
+            /* L'effet martelé est accentué par ce filtre */
+            filter: contrast(105%) brightness(98%);
         }
 
-        /* Corps de l'enveloppe (partie basse) */
+        /* Corps de l'enveloppe */
         .envelope::after {
             content: "";
             position: absolute;
             bottom: 0; left: 0;
             width: 100%; height: 100%;
             background-color: #fcfaf7;
-            background-image: var(--paper-texture);
+            background-image: var(--hammered-texture);
             clip-path: polygon(0 0, 0% 100%, 100% 100%, 100% 0, 50% 50%);
             z-index: 3;
-            box-shadow: inset 0 0 30px rgba(0,0,0,0.03);
             border: 1px solid rgba(0,0,0,0.02);
         }
 
-        /* Rabat (partie haute qui s'ouvre) */
+        /* Rabat martelé */
         .flap {
             position: absolute;
             top: 0; left: 0;
             width: 100%; height: 100%;
             background-color: #ffffff;
-            background-image: var(--paper-texture);
+            background-image: var(--hammered-texture);
             clip-path: polygon(0 0, 50% 55%, 100% 0);
             z-index: 4;
             transition: transform 1.2s cubic-bezier(0.4, 0, 0.2, 1);
             transform-origin: top;
-            filter: drop-shadow(0 5px 5px rgba(0,0,0,0.08));
+            filter: drop-shadow(0 8px 6px rgba(0,0,0,0.12));
         }
 
-        .envelope.open .flap {
-            transform: rotateX(180deg);
-            z-index: 1;
-        }
+        .envelope.open .flap { transform: rotateX(180deg); z-index: 1; }
 
-        /* SCEAU DE CIRE ANCIEN AVEC INITIALES */
+        /* SCEAU ANCIEN FONDUE */
         .seal {
             position: absolute;
             top: 55%; left: 50%;
             transform: translate(-50%, -50%);
-            width: 90px; height: 90px;
+            width: 95px; height: 95px;
             background: radial-gradient(circle at 30% 30%, #e2c275, #b38b4d, #8a6d3b);
-            border-radius: 48% 52% 50% 50% / 50% 48% 52% 50%; /* Forme irrégulière "fondue" */
-            z-index: 5;
-            display: flex; justify-content: center; align-items: center;
-            color: rgba(255,255,255,0.95);
-            font-family: 'Pinyon Script', cursive;
-            font-size: 1.8rem;
-            box-shadow: 3px 10px 20px rgba(0,0,0,0.3), inset -2px -2px 5px rgba(0,0,0,0.2);
-            transition: 0.7s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-            text-shadow: 1px 1px 2px rgba(0,0,0,0.3);
+            border-radius: 46% 54% 49% 51% / 53% 47% 55% 45%; /* Forme fondue */
+            z-index: 10;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            box-shadow: 4px 12px 25px rgba(0,0,0,0.35), inset -3px -3px 10px rgba(0,0,0,0.4);
+            transition: 0.7s ease-in-out;
         }
 
-        .envelope.open .seal { 
-            opacity: 0; 
-            transform: translate(-50%, -120%) scale(0.4); 
+        .seal-initials {
+            font-family: 'Pinyon Script', cursive;
+            color: rgba(255, 255, 255, 0.95);
+            font-size: 1.9rem;
+            text-shadow: 1px 2px 4px rgba(0,0,0,0.4);
+            pointer-events: none;
         }
+
+        .envelope.open .seal { opacity: 0; transform: translate(-50%, -150%) scale(0); }
 
         .open-text {
-            margin-top: 50px;
+            margin-top: 60px;
             color: var(--gold);
             letter-spacing: 5px;
             font-family: 'Cinzel';
             font-size: 0.75rem;
             text-transform: uppercase;
-            text-align: center;
+            animation: pulse 2s infinite;
         }
+
+        @keyframes pulse { 0%, 100% { opacity: 0.5; } 50% { opacity: 1; } }
 
         /* --- CARTE D'INVITATION --- */
         #main-content {
             display: none;
             width: 95%; max-width: 600px;
             background: var(--ivoire);
-            background-image: var(--paper-texture);
+            background-image: var(--hammered-texture);
             padding: 50px 10px;
             text-align: center;
             position: relative;
@@ -132,10 +136,7 @@
             animation: cardSlideOut 2s ease forwards;
         }
 
-        @keyframes cardSlideOut {
-            0% { transform: translateY(100px); opacity: 0; }
-            100% { transform: translateY(0); opacity: 1; }
-        }
+        @keyframes cardSlideOut { 0% { transform: translateY(100px); opacity: 0; } 100% { transform: translateY(0); opacity: 1; } }
 
         .gold-border { border: 2px solid var(--gold); padding: 8px; }
         .inner-frame { border: 1px solid var(--gold); padding: 35px 5px; }
@@ -150,30 +151,35 @@
             display: flex; justify-content: center; align-items: center; gap: 8px;
         }
 
-        .photo-container {
-            width: 260px; height: 260px;
-            max-width: 75vw; max-height: 75vw;
-            margin: 25px auto;
+        .photo-container { 
+            width: 260px; height: 260px; 
+            max-width: 75vw; max-height: 75vw; 
+            margin: 25px auto; 
+            border-radius: 50%; 
+            border: 2px solid var(--gold); 
+            padding: 5px; 
+            background: white; 
+            overflow: hidden; 
         }
+        .couple-photo { width: 100%; height: 100%; object-fit: cover; border-radius: 50%; }
 
-        .couple-photo {
-            width: 100%; height: 100%;
-            object-fit: cover; border-radius: 50%;
-            border: 2px solid var(--gold);
-            padding: 4px; background: white;
-        }
+        .event-time { font-family: 'Cinzel'; font-weight: 700; color: var(--gold); font-size: 1.1rem; display: block; margin-top: 15px; }
+        .maps-link { display: inline-block; color: var(--deep-black); text-decoration: none; font-family: 'Cinzel'; font-size: 0.85rem; border-bottom: 1px solid var(--gold); margin-bottom: 5px; }
 
-        .event-step { margin-bottom: 15px; }
-        .event-time { font-family: 'Cinzel'; font-weight: 700; color: var(--gold); font-size: 1.1rem; }
-        .maps-link { display: inline-block; color: var(--deep-black); text-decoration: none; font-family: 'Cinzel'; font-size: 0.85rem; border-bottom: 1px solid var(--gold); margin-top: 4px;}
-
-        .cal-btn { display: inline-block; margin-top: 20px; padding: 10px 15px; border: 1px solid var(--gold); color: var(--gold); text-decoration: none; font-size: 0.7rem; font-family: 'Cinzel'; letter-spacing: 2px; text-transform: uppercase; }
+        .cal-btn { display: inline-block; margin-top: 25px; padding: 10px 15px; border: 1px solid var(--gold); color: var(--gold); text-decoration: none; font-size: 0.7rem; font-family: 'Cinzel'; letter-spacing: 2px; text-transform: uppercase; }
 
         .rsvp-form { max-width: 280px; margin: 40px auto 0; }
-        select, input { width: 100%; padding: 12px; border: none; border-bottom: 1px solid #ccc; background: transparent; text-align-last: center; margin-bottom: 10px; font-size: 0.85rem; }
-        button { width: 100%; padding: 16px; background: var(--gold); color: white; border: none; text-transform: uppercase; font-weight: 700; cursor: pointer; margin-top: 10px; letter-spacing: 3px; }
+        select, input { width: 100%; padding: 12px; border: none; border-bottom: 1px solid #ccc; background: transparent; text-align-last: center; margin-bottom: 10px; font-size: 0.85rem; outline: none; }
+        button { width: 100%; padding: 16px; background: var(--gold); color: white; border: none; text-transform: uppercase; font-weight: 700; cursor: pointer; letter-spacing: 3px; }
 
-        .gold-dust { position: fixed; border-radius: 50%; pointer-events: none; z-index: -1; animation: drift linear infinite; }
+        /* --- BOULES SCINTILLANTES (AVANT-PLAN) --- */
+        .gold-dust { 
+            position: fixed; 
+            border-radius: 50%; 
+            pointer-events: none; 
+            z-index: 10000; 
+            animation: drift linear infinite; 
+        }
         @keyframes drift { to { transform: translateY(110vh); opacity: 0; } }
     </style>
 </head>
@@ -186,7 +192,9 @@
 <div id="envelope-wrapper">
     <div class="envelope" id="envelope" onclick="openInvite()">
         <div class="flap"></div>
-        <div class="seal">F & T</div>
+        <div class="seal">
+            <span class="seal-initials">F & T</span>
+        </div>
     </div>
     <p class="open-text">Ouvrir l'invitation</p>
 </div>
@@ -203,21 +211,17 @@
                 <img src="notre-photo.jpg" alt="Farah & Tarek" class="couple-photo">
             </div>
             
-            <p style="font-family: 'Cinzel'; font-weight: 700; font-size: 1rem; margin-bottom: 25px;">Samedi 11 Avril 2026</p>
+            <p style="font-family: 'Cinzel'; font-weight: 700; font-size: 1rem;">Samedi 11 Avril 2026</p>
             
-            <div class="event-step">
-                <span class="event-time">09:45</span><br>
-                <a href="http://googleusercontent.com/maps.google.com/7" target="_blank" class="maps-link">Mairie d'Asnières 📍</a>
-            </div>
+            <span class="event-time">09:45</span>
+            <a href="http://googleusercontent.com/maps.google.com/9" target="_blank" class="maps-link">Mairie d'Asnières 📍</a>
 
-            <div class="event-step" style="margin-top: 15px;">
-                <span class="event-time">13:45</span><br>
-                <a href="https://share.google/ATM6Xe4TJUj33lnAm" target="_blank" class="maps-link">L'Arganier Paris 🍽️</a>
-            </div>
+            <span class="event-time">13:45</span>
+            <a href="https://share.google/ATM6Xe4TJUj33lnAm" target="_blank" class="maps-link">L'Arganier Paris 🍽️</a>
             
             <div id="timer" style="margin: 25px 0; font-family: 'Cinzel'; letter-spacing: 3px; font-size: 1.2rem; color: var(--gold); font-weight: 700;"></div>
 
-            <a href="https://www.google.com/calendar/render?action=TEMPLATE&text=Mariage+Farah+et+Tarek&dates=20260411T074500Z/20260411T160000Z&details=Cérémonie+Mairie+Asnieres+puis+Déjeuner+L'Arganier" target="_blank" class="cal-btn">Ajouter à l'agenda</a>
+            <a href="https://www.google.com/calendar/render?action=TEMPLATE&text=Mariage+Farah+et+Tarek&dates=20260411T074500Z/20260411T160000Z&details=Mairie+Asnieres+puis+Déjeuner+L'Arganier" target="_blank" class="cal-btn">Ajouter à l'agenda</a>
 
             <p style="font-family: 'Montserrat'; font-style: italic; font-size: 0.75rem; margin: 40px 10px 15px; color: var(--gold);">Nous vous remercions du fond du cœur de partager ce moment avec nous.</p>
 
@@ -296,12 +300,13 @@
             let d = document.createElement('div');
             d.className = 'gold-dust';
             d.style.left = Math.random() * 100 + '%';
-            d.style.top = '-20px';
+            d.style.top = '-50px';
             d.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
-            let size = (Math.random() * 4 + 1) + 'px';
+            let size = (Math.random() * 5 + 1) + 'px'; 
             d.style.width = size; d.style.height = size;
-            d.style.animationDuration = (Math.random() * 5 + 3) + 's';
-            d.style.animationDelay = (Math.random() * 10) + 's';
+            d.style.animationDuration = (Math.random() * 6 + 4) + 's';
+            d.style.animationDelay = (Math.random() * 12) + 's';
+            d.style.opacity = Math.random() * 0.8 + 0.2;
             document.body.appendChild(d);
         }
     }
