@@ -11,6 +11,8 @@
             --ivoire: #fefdfb;
             --gold: #b38b4d;
             --gold-gradient: linear-gradient(45deg, #b38b4d 25%, #e2c275 50%, #b38b4d 75%);
+            /* Texture martelée propre et légère */
+            --texture: url('https://www.transparenttextures.com/patterns/natural-paper.png');
         }
 
         * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -23,14 +25,11 @@
 
         body {
             overflow-x: hidden;
-            overflow-y: hidden;
+            overflow-y: hidden; /* Débloqué par JS après ouverture */
             display: flex;
             justify-content: center;
             align-items: center;
         }
-
-        /* --- FILTRE MARTELÉ --- */
-        .hammered { filter: url(#hammered-effect); }
 
         /* --- ENVELOPPE --- */
         #envelope-wrapper {
@@ -41,139 +40,131 @@
             justify-content: center;
             align-items: center;
             z-index: 9999;
-            transition: opacity 1s ease;
+            transition: opacity 0.8s ease;
         }
 
         .envelope {
             position: relative;
             width: 90%;
-            max-width: 480px;
+            max-width: 450px;
             aspect-ratio: 3 / 2;
-            background: #ffffff;
-            box-shadow: 0 30px 60px rgba(0,0,0,0.12);
+            background-color: #ffffff;
+            background-image: var(--texture);
+            box-shadow: 0 30px 60px rgba(0,0,0,0.1);
             cursor: pointer;
+            display: flex;
+            justify-content: center;
+            align-items: center;
         }
 
         .pocket {
             position: absolute;
             bottom: 0; left: 0; width: 100%; height: 100%;
-            background: #f9f7f2;
+            background-color: #fcfaf7;
+            background-image: var(--texture);
             clip-path: polygon(0% 0%, 0% 100%, 100% 100%, 100% 0%, 50% 45%);
             z-index: 3;
+            border-bottom: 1px solid rgba(0,0,0,0.05);
         }
 
         .flap {
             position: absolute;
             top: 0; left: 0; width: 100%; height: 100%;
-            background: #ffffff;
+            background-color: #ffffff;
+            background-image: var(--texture);
             clip-path: polygon(0 0, 50% 50%, 100% 0);
             z-index: 4;
-            transition: transform 1s ease;
+            transition: transform 1s ease-in-out;
             transform-origin: top;
-            filter: drop-shadow(0 8px 5px rgba(0,0,0,0.1));
+            filter: drop-shadow(0 5px 5px rgba(0,0,0,0.1));
         }
 
         .envelope.open .flap { transform: rotateX(180deg); }
 
-        /* --- SCEAU ET TEXTE (CENTRAGE CORRIGÉ) --- */
+        /* --- GROUPE SCEAU ET TEXTE CENTRÉ --- */
         .seal-group {
-            position: absolute;
-            top: 48%; 
-            left: 0;
-            width: 100%; /* Prend toute la largeur de l'enveloppe */
+            position: relative;
+            z-index: 10;
             display: flex;
             flex-direction: column;
-            align-items: center; /* Centre horizontalement tout le contenu */
+            align-items: center;
             justify-content: center;
-            z-index: 10;
             transition: 0.5s;
             pointer-events: none;
+            margin-top: 15%; /* Ajustement pour être sur le point de rencontre */
         }
 
         .seal {
-            width: 85px; height: 85px;
+            width: 80px; height: 80px;
             background: radial-gradient(circle at 30% 30%, #e2c275, #b38b4d, #8a6d3b);
             border-radius: 48% 52% 45% 55% / 55% 45% 55% 45%;
             display: flex; justify-content: center; align-items: center;
-            box-shadow: 3px 8px 15px rgba(0,0,0,0.3);
+            box-shadow: 2px 5px 15px rgba(0,0,0,0.2);
             font-family: 'Pinyon Script', cursive;
-            color: white; font-size: 1.8rem;
-            margin-bottom: 20px; /* Espace fixe sous le sceau */
+            color: white; font-size: 1.6rem;
+            margin-bottom: 15px;
         }
 
         .open-text {
             color: var(--gold);
             font-family: 'Cinzel';
-            font-size: 0.75rem;
-            letter-spacing: 4px;
+            font-size: 0.7rem;
+            letter-spacing: 3px;
             font-weight: bold;
-            text-align: center;
-            text-shadow: 0 0 10px white, 0 0 5px white;
+            text-transform: uppercase;
+            text-shadow: 0 0 10px white;
             animation: pulse 2s infinite;
         }
 
-        @keyframes pulse { 0%, 100% { opacity: 0.6; } 50% { opacity: 1; } }
+        @keyframes pulse { 0%, 100% { opacity: 0.5; } 50% { opacity: 1; } }
 
         .envelope.open .seal-group { opacity: 0; visibility: hidden; }
 
-        /* --- CARTE D'INVITATION --- */
+        /* --- CARTE --- */
         #main-content {
             display: none;
             width: 95%;
             max-width: 600px;
             background: var(--ivoire);
-            padding: 40px 10px;
-            margin: 40px auto;
-            box-shadow: 0 20px 60px rgba(0,0,0,0.05);
-            border: 1px solid rgba(179, 139, 77, 0.2);
+            background-image: var(--texture);
+            padding: 40px 15px;
+            margin: 20px auto;
             text-align: center;
+            box-shadow: 0 20px 50px rgba(0,0,0,0.05);
+            border: 1px solid rgba(179, 139, 77, 0.2);
         }
 
         .inner-frame { border: 1px solid var(--gold); padding: 30px 10px; }
         .script-names { font-family: 'Pinyon Script', cursive; font-size: clamp(35px, 8vw, 70px); background: var(--gold-gradient); -webkit-background-clip: text; -webkit-text-fill-color: transparent; margin: 15px 0; }
 
         .photo-container { 
-            width: 240px; height: 240px; 
-            margin: 20px auto; 
-            border-radius: 50%; 
-            border: 2px solid var(--gold); 
-            padding: 5px; background: white; 
-            overflow: hidden; 
+            width: 240px; height: 240px; margin: 20px auto; 
+            border-radius: 50%; border: 2px solid var(--gold); 
+            padding: 5px; background: white; overflow: hidden; 
         }
         .couple-photo { width: 100%; height: 100%; object-fit: cover; border-radius: 50%; }
 
-        .event-time { font-family: 'Cinzel'; font-weight: 700; color: var(--gold); font-size: 1.1rem; display: block; margin-top: 20px; }
+        .event-time { font-family: 'Cinzel'; font-weight: 700; color: var(--gold); font-size: 1.1rem; display: block; margin-top: 15px; }
         .maps-link { display: inline-block; color: #1a1a1a; text-decoration: none; font-family: 'Cinzel'; font-size: 0.85rem; border-bottom: 1px solid var(--gold); margin-bottom: 10px; }
 
         .cal-btn { display: inline-block; margin: 20px 0; padding: 12px 18px; border: 1px solid var(--gold); color: var(--gold); text-decoration: none; font-size: 0.7rem; font-family: 'Cinzel'; letter-spacing: 2px; text-transform: uppercase; }
 
-        button { width: 100%; padding: 18px; background: var(--gold); color: white; border: none; text-transform: uppercase; font-weight: 700; letter-spacing: 2px; cursor: pointer; }
+        button { width: 100%; padding: 18px; background: var(--gold); color: white; border: none; text-transform: uppercase; font-weight: 700; cursor: pointer; }
 
-        /* --- PARTICULES (AVANT-PLAN) --- */
         .gold-dust { position: fixed; border-radius: 50%; pointer-events: none; z-index: 10000; animation: drift linear infinite; }
         @keyframes drift { to { transform: translateY(110vh); opacity: 0; } }
     </style>
 </head>
 <body>
 
-<svg style="position: absolute; width: 0; height: 0;">
-    <filter id="hammered-effect">
-        <feTurbulence type="fractalNoise" baseFrequency="0.05" numOctaves="4" result="noise" />
-        <feSpecularLighting in="noise" surfaceScale="3" specularConstant="0.75" specularExponent="20" lighting-color="#ffffff" result="light">
-            <feDistantLight azimuth="45" elevation="50" />
-        </feSpecularLighting>
-        <feComposite in="light" in2="SourceGraphic" operator="in" />
-    </filter>
-</svg>
-
 <audio id="bgMusic" loop>
     <source src="musique.m4a" type="audio/x-m4a">
 </audio>
 
 <div id="envelope-wrapper">
-    <div class="envelope hammered" id="envelope" onclick="openInvite()">
-        <div class="flap hammered"></div>
-        <div class="pocket hammered"></div>
+    <div class="envelope" id="envelope" onclick="openInvite()">
+        <div class="flap"></div>
+        <div class="pocket"></div>
         <div class="seal-group">
             <div class="seal">F & T</div>
             <p class="open-text">Ouvrir l'invitation</p>
@@ -181,7 +172,7 @@
     </div>
 </div>
 
-<main id="main-content" class="hammered">
+<main id="main-content">
     <div class="inner-frame">
         <p style="font-style: italic; font-size: 0.9rem;">L'union de deux âmes</p>
         <p style="font-family: 'Cinzel'; font-size: 0.75rem; letter-spacing: 3px; text-transform: uppercase;">Jusqu'à notre dernier souffle</p>
@@ -195,7 +186,7 @@
         <p style="font-family: 'Cinzel'; font-weight: 700; font-size: 1.1rem;">Samedi 11 Avril 2026</p>
         
         <span class="event-time">09:45</span>
-        <a href="https://maps.google.com" target="_blank" class="maps-link">Mairie d'Asnières 📍</a>
+        <a href="http://googleusercontent.com/maps.google.com/9" target="_blank" class="maps-link">Mairie d'Asnières 📍</a>
 
         <span class="event-time">13:45</span>
         <a href="https://share.google/ATM6Xe4TJUj33lnAm" target="_blank" class="maps-link">L'Arganier Paris 🍽️</a>
@@ -244,7 +235,7 @@
                 document.getElementById('envelope-wrapper').style.display = 'none';
                 document.getElementById('main-content').style.display = 'block';
                 
-                // --- LIBÉRATION DU SCROLL ---
+                // DÉBLOCAGE DU SCROLL
                 document.body.style.overflowY = 'auto';
                 document.body.style.display = 'block'; 
                 
