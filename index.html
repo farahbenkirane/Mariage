@@ -4,24 +4,22 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Farah & Tarek — 11 Avril 2026</title>
-    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,600;1,400&family=Montserrat:wght@300;400&display=swap" rel="stylesheet">
-
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;500&family=Montserrat:wght@200;300;400&family=Playfair+Display:ital,wght@0,400;1,400&display=swap" rel="stylesheet">
 
     <style>
         :root {
-            --ivoire: #fdfcf9;
-            --gold: #c5a059;
-            --gold-light: #e2c275;
-            --text: #4a4a4a;
+            --ivoire: #fefdfb;
+            --gold: #b38b4d;
+            --gold-light: #d4af37;
+            --text: #2c2c2c;
+            --subtle: #8e8e8e;
         }
-
 
         * { margin: 0; padding: 0; box-sizing: border-box; }
 
-
         body {
             font-family: 'Montserrat', sans-serif;
-            background-color: #f4f1ea;
+            background-color: #f7f6f2;
             color: var(--text);
             display: flex;
             justify-content: center;
@@ -30,267 +28,242 @@
             overflow-x: hidden;
         }
 
+        .paper-texture {
+            background-image: url('https://www.transparenttextures.com/patterns/handmade-paper.png');
+        }
 
-        /* --- ENVELOPPE ANIMÉE --- */
+        /* --- ENVELOPPE AGRANDIE --- */
         #envelope-wrapper {
             position: fixed;
             top: 0; left: 0; width: 100%; height: 100%;
-            background: #f4f1ea;
+            background: #f7f6f2;
             display: flex;
             flex-direction: column;
             justify-content: center;
             align-items: center;
             z-index: 9999;
-            transition: opacity 1s ease;
+            transition: opacity 1.2s cubic-bezier(0.4, 0, 0.2, 1);
         }
-
 
         .envelope {
             position: relative;
-            width: 300px;
-            height: 200px;
-            background: white;
-            border: 1px solid #e0e0e0;
-            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+            width: 450px; /* Largeur agrandie */
+            height: 300px; /* Hauteur agrandie */
+            background: #ffffff;
+            box-shadow: 0 40px 80px rgba(0,0,0,0.06);
             cursor: pointer;
+            border: 1px solid rgba(0,0,0,0.02);
+            max-width: 90vw; /* Sécurité mobile */
         }
 
-
+        /* Le rabat de l'enveloppe */
         .envelope::before {
             content: "";
             position: absolute;
             top: 0; left: 0;
             width: 0; height: 0;
-            border-top: 110px solid #f9f9f9;
-            border-left: 150px solid transparent;
-            border-right: 150px solid transparent;
+            border-top: 170px solid #fcfcfc; /* Ajusté pour la nouvelle taille */
+            border-left: 225px solid transparent; /* Moitié de 450px */
+            border-right: 225px solid transparent;
             z-index: 2;
-            transition: transform 0.8s ease;
+            transition: transform 1s cubic-bezier(0.6, 0.05, 0.1, 0.9);
             transform-origin: top;
         }
 
-
-        .envelope.open::before {
-            transform: rotateX(180deg);
-        }
-
+        .envelope.open::before { transform: rotateX(180deg); }
 
         .seal {
             position: absolute;
-            top: 90px; left: 50%;
+            top: 140px; /* Centré verticalement sur la nouvelle taille */
+            left: 50%;
             transform: translateX(-50%);
-            width: 55px; height: 55px;
-            background: radial-gradient(circle, var(--gold-light), var(--gold));
+            width: 70px; /* Sceau agrandi */
+            height: 70px;
+            background: radial-gradient(circle, #d4af37, #b38b4d);
             border-radius: 50%;
             z-index: 3;
             display: flex;
             justify-content: center;
             align-items: center;
             color: white;
-            font-family: 'Playfair Display', serif;
-            font-size: 1.2rem;
-            box-shadow: 0 4px 10px rgba(197, 160, 89, 0.4);
-            transition: 0.5s;
+            font-family: 'Cinzel', serif;
+            font-size: 1.3rem;
+            box-shadow: 0 8px 20px rgba(179, 139, 77, 0.4);
+            transition: 0.6s ease;
         }
 
-
-        .envelope.open .seal { opacity: 0; }
-
+        .envelope.open .seal { opacity: 0; transform: translateX(-50%) scale(0.5); }
 
         /* --- CARTE D'INVITATION --- */
         #main-content {
             display: none;
-            width: 95%;
-            max-width: 500px;
+            width: 90%;
+            max-width: 550px;
             background: var(--ivoire);
-            border: 1px solid #e0d8c3;
-            padding: 40px 20px;
+            padding: 60px 30px;
             text-align: center;
             position: relative;
-            box-shadow: 0 10px 50px rgba(0,0,0,0.05);
-            animation: slideUp 1.5s ease-out;
+            box-shadow: 0 40px 100px rgba(0,0,0,0.03);
+            border: 1px solid rgba(179, 139, 77, 0.2);
+            animation: cardReveal 2s cubic-bezier(0.19, 1, 0.22, 1) forwards;
         }
 
-
-        @keyframes slideUp {
-            from { transform: translateY(100px); opacity: 0; }
+        @keyframes cardReveal {
+            from { transform: translateY(80px); opacity: 0; }
             to { transform: translateY(0); opacity: 1; }
         }
 
-
-        .border-inner {
-            border: 1px solid var(--gold);
-            padding: 20px;
-            position: relative;
-        }
-
+        .double-border { border: 1px solid var(--gold); padding: 10px; position: relative; }
+        .inner-content { border: 0.5px solid var(--gold); padding: 40px 20px; }
 
         h1 {
             font-family: 'Playfair Display', serif;
-            font-size: 42px;
+            font-size: clamp(30px, 8vw, 48px);
             color: var(--gold);
             font-weight: 400;
-            margin-bottom: 20px;
+            letter-spacing: 2px;
+            margin: 20px 0;
+            font-style: italic;
         }
-
 
         .couple-photo {
-            width: 180px;
-            height: 180px;
+            width: 200px;
+            height: 200px;
             object-fit: cover;
             border-radius: 50%;
-            border: 2px solid var(--gold);
-            padding: 5px;
-            margin: 20px auto;
+            border: 1px solid var(--gold);
+            padding: 8px;
+            margin: 30px auto;
         }
 
-
-        .gold-line { width: 50px; height: 1px; background: var(--gold); margin: 25px auto; }
-
-
-        p { line-height: 1.6; letter-spacing: 1px; font-size: 0.9rem; }
-
-
-        /* --- FORMULAIRE CHIC --- */
-        .rsvp-container {
-            margin-top: 40px;
-            background: white;
-            padding: 30px 20px;
-            border-top: 1px solid #eee;
+        .section-title {
+            font-family: 'Cinzel', serif;
+            font-size: 0.75rem;
+            letter-spacing: 5px;
+            color: var(--subtle);
+            text-transform: uppercase;
+            margin-bottom: 10px;
         }
 
+        .gold-divider { width: 40px; height: 1px; background: var(--gold); margin: 30px auto; }
 
-        input, select {
+        /* --- RSVP --- */
+        .rsvp-container { margin-top: 50px; padding-top: 40px; border-top: 1px solid rgba(179, 139, 77, 0.1); }
+
+        select, input {
             width: 100%;
-            padding: 12px;
+            padding: 15px;
             margin-bottom: 15px;
-            border: 1px solid #ddd;
-            border-radius: 0; /* Carré pour plus de chic */
-            font-family: inherit;
+            border: none;
+            border-bottom: 1px solid #e0e0e0;
+            font-family: 'Montserrat', sans-serif;
+            font-weight: 300;
+            font-size: 0.8rem;
             background: transparent;
+            text-align: center;
+            transition: border-color 0.3s;
+            text-transform: uppercase;
+            letter-spacing: 1px;
         }
-
 
         button {
             width: 100%;
-            padding: 15px;
+            padding: 18px;
             background: var(--gold);
             color: white;
             border: none;
-            letter-spacing: 2px;
+            letter-spacing: 4px;
             text-transform: uppercase;
-            font-size: 0.8rem;
+            font-size: 0.7rem;
             cursor: pointer;
-            transition: 0.4s;
+            transition: all 0.4s;
+            margin-top: 20px;
         }
 
+        button:hover { background: #000; letter-spacing: 6px; }
 
-        button:hover { background: var(--text); }
-
-
-        /* PÉTALES BLANCHES */
-        .petal { position: fixed; top: -10px; background: white; border-radius: 50%; opacity: 0.8; z-index: -1; animation: fall linear infinite; }
+        .particle { position: fixed; top: -10px; border-radius: 50%; opacity: 0.6; z-index: -1; animation: fall linear infinite; }
         @keyframes fall { to { transform: translateY(110vh) rotate(360deg); } }
     </style>
 </head>
-<body>
-
+<body class="paper-texture">
 
 <audio id="bgMusic" loop>
     <source src="musique.m4a" type="audio/x-m4a">
 </audio>
 
-
 <div id="envelope-wrapper">
     <div class="envelope" id="envelope" onclick="openLetter()">
-        <div class="seal">F&T</div>
+        <div class="seal">FT</div>
     </div>
-    <p style="margin-top: 30px; color: var(--gold); letter-spacing: 3px; font-size: 0.7rem;">CLIQUEZ POUR OUVRIR</p>
+    <p style="margin-top: 50px; color: var(--gold); letter-spacing: 8px; font-size: 0.7rem; font-family: 'Cinzel';">OUVRIR L'INVITATION</p>
 </div>
 
-
-<main id="main-content">
-    <div class="border-inner">
-        <p style="font-style: italic; color: var(--gold);">Nous avons le bonheur de vous inviter</p>
-        <h1>Farah & Tarek</h1>
-        
-        <img src="photo.jpg" alt="Farah & Tarek" class="couple-photo">
-        
-        <div class="gold-line"></div>
-        
-        <p>SAMEDI 11 AVRIL 2026 À 09:45</p>
-        <p style="margin-top: 10px; font-weight: 300;">MAIRIE D'ASNIÈRES-SUR-SEINE</p>
-        
-        <div id="timer" style="margin: 20px 0; font-family: 'Playfair Display'; font-size: 1.2rem; color: var(--gold);"></div>
-
-
-        <div class="rsvp-container">
-            <h3 style="font-weight: 300; margin-bottom: 20px; letter-spacing: 2px;">R.S.V.P</h3>
-            
-            <form action="https://formspree.io/f/xaqdvqyk" method="POST">
-                <input type="hidden" name="_replyto" value="farah.benkirane@gmail.com">
-                
-                <input type="email" name="Email" placeholder="VOTRE ADRESSE EMAIL" required>
-                
-                <select name="Présence" id="presence" required>
-                    <option value="">CONFIRMEZ-VOUS VOTRE PRÉSENCE ?</option>
-                    <option value="Oui">OUI, AVEC JOIE 🤍</option>
-                    <option value="Non">NON, MALHEUREUSEMENT</option>
-                </select>
-
-
-                <div id="guest-block" style="display:none;">
-                    <select id="guest-count" name="Nombre de personnes">
-                        <option value="1">1 PERSONNE</option>
-                        <option value="2">2 PERSONNES</option>
-                        <option value="3">3 PERSONNES</option>
+<main id="main-content" class="paper-texture">
+    <div class="double-border">
+        <div class="inner-content">
+            <p class="section-title">L'union de deux âmes</p>
+            <h1>Farah & Tarek</h1>
+            <img src="notre-photo.jpg" alt="Farah & Tarek" class="couple-photo">
+            <div class="gold-divider"></div>
+            <p style="font-family: 'Cinzel'; font-size: 0.9rem; letter-spacing: 2px;">Samedi 11 Avril 2026</p>
+            <p style="margin-top: 10px; font-weight: 200; font-size: 0.8rem; letter-spacing: 2px;">09H45 • MAIRIE D'ASNIÈRES-SUR-SEINE</p>
+            <div id="timer" style="margin: 30px 0; font-family: 'Cinzel'; font-size: 1rem; color: var(--gold); letter-spacing: 3px;"></div>
+            <div class="rsvp-container">
+                <p class="section-title">Réponse souhaitée</p>
+                <form action="https://formspree.io/f/xaqdvqyk" method="POST">
+                    <select name="Présence" id="presence" required>
+                        <option value="">Confirmation</option>
+                        <option value="Oui">PRÉSENT(E) AVEC JOIE</option>
+                        <option value="Non">ABSENT(E) AVEC REGRET</option>
                     </select>
-                    <div id="names-container"></div>
-                </div>
-
-
-                <button type="submit">Envoyer</button>
-            </form>
+                    <div id="guest-block" style="display:none;">
+                        <select id="guest-count" name="Nombre de personnes">
+                            <option value="1">MOI UNIQUEMENT</option>
+                            <option value="2">DEUX PERSONNES</option>
+                            <option value="3">TROIS PERSONNES</option>
+                            <option value="4">QUATRE PERSONNES</option>
+                            <option value="5">CINQ PERSONNES</option>
+                        </select>
+                        <div id="names-container"></div>
+                    </div>
+                    <button type="submit">Confirmer</button>
+                </form>
+            </div>
         </div>
     </div>
 </main>
 
-
 <script>
-    // 1. Mot de passe
+    // Mot de passe
     window.addEventListener('load', () => {
-        let p = prompt("Code d'accès :");
+        let p = prompt("Veuillez entrer votre code d'accès personnel :");
         if (p !== "FarahTarek2026") {
             alert("Code incorrect.");
             window.location.reload();
         }
     });
 
-
-    // 2. Ouverture de la lettre
+    // Ouverture
     function openLetter() {
         const music = document.getElementById('bgMusic');
         document.getElementById('envelope').classList.add('open');
         music.play();
-
-
         setTimeout(() => {
             document.getElementById('envelope-wrapper').style.opacity = '0';
             setTimeout(() => {
                 document.getElementById('envelope-wrapper').style.display = 'none';
                 document.getElementById('main-content').style.display = 'block';
-                startWhitePetals();
-            }, 800);
-        }, 1000);
+                createLuxeParticles();
+            }, 1000);
+        }, 1200);
     }
 
-
-    // 3. Logique Invités
+    // Formulaire
     const presence = document.getElementById('presence');
     const guestBlock = document.getElementById('guest-block');
     const guestCount = document.getElementById('guest-count');
     const namesContainer = document.getElementById('names-container');
-
 
     presence.onchange = function() {
         if(this.value === 'Oui') {
@@ -301,9 +274,7 @@
         }
     };
 
-
     guestCount.onchange = updateInputs;
-
 
     function updateInputs() {
         namesContainer.innerHTML = '';
@@ -311,26 +282,24 @@
             const input = document.createElement('input');
             input.type = 'text';
             input.name = `Nom Invité ${i}`;
-            input.placeholder = `NOM COMPLET INVITÉ ${i}`;
+            input.placeholder = (guestCount.value == 1) ? "VOTRE NOM COMPLET" : `NOM DE L'INVITÉ ${i}`;
             input.required = true;
             namesContainer.appendChild(input);
         }
     }
 
-
-    // 4. Pétales et Compteur
-    function startWhitePetals() {
-        for(let i=0; i<30; i++) {
+    function createLuxeParticles() {
+        const colors = ['#ffffff', '#d4af37', '#f4f1ea'];
+        for(let i=0; i<40; i++) {
             let p = document.createElement('div');
-            p.className = 'petal';
+            p.className = 'particle';
             p.style.left = Math.random() * 100 + '%';
-            p.style.width = p.style.height = (Math.random() * 8 + 8) + 'px';
-            p.style.animationDuration = (Math.random() * 5 + 7) + 's';
-            p.style.animationDelay = Math.random() * 5 + 's';
+            p.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
+            p.style.width = p.style.height = (Math.random() * 5 + 3) + 'px';
+            p.style.animationDuration = (Math.random() * 6 + 8) + 's';
             document.body.appendChild(p);
         }
     }
-
 
     const target = new Date("April 11, 2026 09:45:00").getTime();
     setInterval(() => {
@@ -339,10 +308,9 @@
         const d = Math.floor(diff / (1000 * 60 * 60 * 24));
         const h = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
         const m = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
-        document.getElementById('timer').innerText = d + "j • " + h + "h • " + m + "m";
+        document.getElementById('timer').innerText = d + "D : " + h + "H : " + m + "M";
     }, 1000);
 </script>
-
 
 </body>
 </html>
