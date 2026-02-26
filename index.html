@@ -135,6 +135,35 @@
 
         .cal-btn { display: inline-block; margin: 20px 0; padding: 12px 18px; border: 1px solid var(--gold); color: var(--gold); text-decoration: none; font-size: 0.7rem; font-family: 'Cinzel'; letter-spacing: 2px; text-transform: uppercase; }
 
+        /* --- SECTION CAGNOTTE --- */
+        .cagnotte-section {
+            margin: 40px 0;
+            padding: 20px;
+            background: rgba(179, 139, 77, 0.05);
+            border-radius: 5px;
+        }
+        .cagnotte-text {
+            font-family: 'Montserrat';
+            font-size: 0.85rem;
+            color: #444;
+            font-style: italic;
+            line-height: 1.6;
+            margin-bottom: 20px;
+        }
+        .cagnotte-btn {
+            display: inline-block;
+            padding: 12px 25px;
+            background: var(--gold);
+            color: white;
+            text-decoration: none;
+            font-family: 'Cinzel';
+            font-size: 0.75rem;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            font-weight: bold;
+            transition: 0.3s;
+        }
+
         #submit-btn { width: 100%; padding: 18px; background: var(--gold); color: white; border: none; text-transform: uppercase; font-weight: 700; cursor: pointer; letter-spacing: 2px; }
 
         .gold-dust { position: fixed; border-radius: 50%; pointer-events: none; z-index: 10000; animation: drift linear infinite; }
@@ -180,6 +209,13 @@
         <div id="timer" style="margin: 25px 0; font-family: 'Cinzel'; letter-spacing: 3px; font-size: 1.3rem; color: var(--gold); font-weight: 700;"></div>
 
         <a href="https://www.google.com/calendar/render?action=TEMPLATE&text=Mariage+Farah+et+Tarek&dates=20260411T074500Z/20260411T160000Z" target="_blank" class="cal-btn">Ajouter à l'agenda</a>
+
+        <div class="cagnotte-section">
+            <p class="cagnotte-text">
+                "Votre présence à nos côtés est le plus beau cadeau que vous puissiez nous offrir. Si vous souhaitez toutefois contribuer à nos futurs projets de vie, une petite attention dans cette cagnotte nous touchera énormément."
+            </p>
+            <a href="https://www.leetchi.com/fr/c/mariage-farah-tarek-9314860" target="_blank" class="cagnotte-btn">Participer à nos projets</a>
+        </div>
 
         <p style="font-family: 'Montserrat'; font-style: italic; font-size: 0.8rem; margin: 20px 0; color: var(--gold); line-height: 1.6;">Nous vous remercions du fond du cœur de partager ce moment avec nous.</p>
 
@@ -243,7 +279,6 @@
         } else if (this.value === 'Non') {
             guestDetails.style.display = 'block';
             presenceOptions.style.display = 'none';
-            // On force 1 seul champ pour l'absence
             updateInputs(true);
         } else {
             guestDetails.style.display = 'none';
@@ -254,7 +289,6 @@
 
     function updateInputs(isAbsence = false) {
         list.innerHTML = '';
-        // Si absence, 1 champ. Sinon, le nombre sélectionné.
         let val = isAbsence ? 1 : parseInt(count.value);
         
         for(let i=1; i<=val; i++) {
@@ -262,13 +296,7 @@
             inp.type = 'text'; 
             inp.name = isAbsence ? `Nom personne absente` : `Nom Invité ${i}`;
             inp.placeholder = (val === 1) ? "Votre nom complet" : `Nom complet invité ${i}`;
-            inp.style.width = '100%'; 
-            inp.style.padding = '15px'; 
-            inp.style.border = 'none'; 
-            inp.style.borderBottom = '1px solid #ccc'; 
-            inp.style.background = 'transparent'; 
-            inp.style.marginBottom = '15px'; 
-            inp.required = true;
+            inp.style.width = '100%'; inp.style.padding = '15px'; inp.style.border = 'none'; inp.style.borderBottom = '1px solid #ccc'; inp.style.background = 'transparent'; inp.style.marginBottom = '15px'; inp.required = true;
             list.appendChild(inp);
         }
     }
