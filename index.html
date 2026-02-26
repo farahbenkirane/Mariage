@@ -24,7 +24,7 @@
 
         body {
             overflow-x: hidden;
-            overflow-y: hidden;
+            overflow-y: hidden; /* Bloqué par défaut */
             display: flex;
             justify-content: center;
             align-items: center;
@@ -80,15 +80,17 @@
         .envelope.open .flap { transform: rotateX(180deg); }
 
         .seal-group {
-            position: relative;
-            z-index: 10;
+            position: absolute;
+            top: 50%;
+            left: 0;
+            width: 100%;
             display: flex;
             flex-direction: column;
             align-items: center;
             justify-content: center;
+            z-index: 10;
             transition: 0.5s;
             pointer-events: none;
-            margin-top: 10%;
         }
 
         .seal {
@@ -109,6 +111,7 @@
             letter-spacing: 3px;
             font-weight: bold;
             text-transform: uppercase;
+            text-align: center;
             text-shadow: 0 0 10px white;
             animation: pulse 2s infinite;
         }
@@ -183,7 +186,7 @@
         <p style="font-family: 'Cinzel'; font-weight: 700; font-size: 1.1rem;">Samedi 11 Avril 2026</p>
         
         <span class="event-time">09:45</span>
-        <a href="http://googleusercontent.com/maps.google.com/9" target="_blank" class="maps-link">Mairie d'Asnières 📍</a>
+        <a href="https://maps.google.com/?q=Mairie+d+Asnieres+sur+Seine" target="_blank" class="maps-link">Mairie d'Asnières 📍</a>
 
         <span class="event-time">13:45</span>
         <a href="https://share.google/ATM6Xe4TJUj33lnAm" target="_blank" class="maps-link">L'Arganier Paris 🍽️</a>
@@ -231,8 +234,11 @@
             setTimeout(() => {
                 document.getElementById('envelope-wrapper').style.display = 'none';
                 document.getElementById('main-content').style.display = 'block';
+                
+                // --- LIBÉRATION DU SCROLL ---
                 document.body.style.overflowY = 'auto';
                 document.body.style.display = 'block'; 
+                
                 createDust();
             }, 800);
         }, 1000);
@@ -244,7 +250,6 @@
     const list = document.getElementById('names-list');
     const submitBtn = document.getElementById('submit-btn');
 
-    // LOGIQUE DYNAMIQUE DU BOUTON
     function updateButtonText() {
         if (att.value === 'Non') {
             submitBtn.innerText = "Confirmer mon absence";
