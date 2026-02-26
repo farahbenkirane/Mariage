@@ -4,30 +4,30 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Farah & Tarek — 11 Avril 2026</title>
-    <link href="https://fonts.googleapis.com/css2?family=Pinyon+Script&family=Cinzel:wght@400;500&family=Montserrat:wght@200;300;400&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Pinyon+Script&family=Cinzel:wght@400;700&family=Montserrat:wght@300;500;700&display=swap" rel="stylesheet">
 
     <style>
         :root {
             --ivoire: #fefdfb;
             --gold: #b38b4d;
             --gold-gradient: linear-gradient(45deg, #b38b4d 25%, #e2c275 50%, #b38b4d 75%);
-            --text: #2c2c2c;
+            --deep-black: #1a1a1a;
         }
 
         * { margin: 0; padding: 0; box-sizing: border-box; }
 
         body {
             font-family: 'Montserrat', sans-serif;
-            background-color: #f2efea; /* Fond légèrement plus chaud */
-            color: var(--text);
+            background-color: #f2efea;
+            color: var(--deep-black);
             display: flex;
             justify-content: center;
             align-items: center;
             min-height: 100vh;
-            overflow: hidden;
+            overflow-x: hidden;
         }
 
-        /* --- ENVELOPPE GÉANTE ET RÉALISTE --- */
+        /* --- ENVELOPPE --- */
         #envelope-wrapper {
             position: fixed;
             top: 0; left: 0; width: 100%; height: 100%;
@@ -41,15 +41,14 @@
 
         .envelope {
             position: relative;
-            width: 550px; /* Taille augmentée */
+            width: 550px;
             height: 380px;
             background: #ffffff;
-            box-shadow: 0 50px 100px rgba(0,0,0,0.08), 0 15px 35px rgba(0,0,0,0.05);
+            box-shadow: 0 50px 100px rgba(0,0,0,0.08);
             cursor: pointer;
             perspective: 1500px;
         }
 
-        /* Rabat supérieur */
         .envelope::before {
             content: "";
             position: absolute;
@@ -61,15 +60,10 @@
             z-index: 4;
             transform-origin: top;
             transition: transform 1.2s cubic-bezier(0.4, 0, 0.2, 1);
-            filter: drop-shadow(0 5px 5px rgba(0,0,0,0.05));
         }
 
-        .envelope.open::before {
-            transform: rotateX(180deg);
-            z-index: 1;
-        }
+        .envelope.open::before { transform: rotateX(180deg); z-index: 1; }
 
-        /* Sceau de cire premium */
         .seal {
             position: absolute;
             top: 175px; left: 50%;
@@ -84,17 +78,14 @@
             color: white;
             font-family: 'Cinzel', serif;
             font-size: 1.6rem;
-            box-shadow: 0 10px 20px rgba(0,0,0,0.2), inset 0 0 10px rgba(0,0,0,0.1);
-            transition: 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+            box-shadow: 0 10px 20px rgba(0,0,0,0.2);
         }
 
-        .envelope.open .seal { opacity: 0; transform: translateX(-50%) scale(0.2); }
-
-        /* --- CARTE D'INVITATION GLISSANTE --- */
+        /* --- CARTE D'INVITATION --- */
         #main-content {
             display: none;
             width: 95%;
-            max-width: 600px;
+            max-width: 650px;
             background: var(--ivoire);
             padding: 60px 40px;
             text-align: center;
@@ -110,78 +101,81 @@
             100% { transform: translateY(0) scale(1); opacity: 1; }
         }
 
-        .gold-border {
-            border: 2px solid var(--gold);
-            padding: 10px;
-            margin: 10px;
-        }
+        .gold-border { border: 2px solid var(--gold); padding: 10px; }
+        .inner-frame { border: 1px solid var(--gold); padding: 40px 20px; }
 
-        .inner-frame {
-            border: 1px solid var(--gold);
-            padding: 40px 20px;
-        }
-
-        /* Typographie */
         .script-names {
             font-family: 'Pinyon Script', cursive;
-            font-size: clamp(50px, 12vw, 85px);
+            font-size: clamp(55px, 14vw, 90px);
             background: var(--gold-gradient);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             background-size: 200% auto;
             animation: goldShine 4s linear infinite;
-            margin: 20px 0;
+            margin: 10px 0;
         }
 
-        @keyframes goldShine {
-            to { background-position: 200% center; }
-        }
+        @keyframes goldShine { to { background-position: 200% center; } }
 
+        /* PHOTO GRAND FORMAT */
         .couple-photo {
-            width: 230px;
-            height: 230px;
+            width: 320px;
+            height: 320px;
             object-fit: cover;
             border-radius: 50%;
             border: 1px solid var(--gold);
-            padding: 10px;
+            padding: 12px;
             margin: 30px auto;
-            box-shadow: 0 15px 35px rgba(0,0,0,0.1);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
         }
 
-        .info-text {
+        /* TEXTES NOIRS ACCENTUÉS */
+        .info-title {
+            font-family: 'Montserrat', sans-serif;
+            font-weight: 500;
+            text-transform: lowercase;
+            font-style: italic;
+            font-size: 1.1rem;
+            color: var(--deep-black);
+            margin-bottom: 5px;
+        }
+
+        .info-bold {
             font-family: 'Cinzel', serif;
-            letter-spacing: 4px;
-            text-transform: uppercase;
-            font-size: 0.8rem;
-            color: var(--subtle);
-            margin-bottom: 10px;
+            letter-spacing: 3px;
+            font-weight: 700;
+            font-size: 1.1rem;
+            color: var(--deep-black);
+            margin-top: 10px;
         }
 
-        /* RSVP Minimaliste */
-        .rsvp-form {
-            margin-top: 50px;
-            max-width: 350px;
-            margin-left: auto;
-            margin-right: auto;
+        .info-details {
+            font-family: 'Cinzel', serif;
+            letter-spacing: 2px;
+            font-weight: 400;
+            font-size: 0.9rem;
+            color: var(--deep-black);
+            margin-top: 8px;
         }
+
+        /* RSVP */
+        .rsvp-form { margin: 50px auto 0; max-width: 350px; }
 
         select, input {
             width: 100%;
             padding: 18px;
             border: none;
-            border-bottom: 1px solid rgba(179, 139, 77, 0.3);
+            border-bottom: 1px solid rgba(0, 0, 0, 0.2);
             background: transparent;
             font-family: 'Montserrat';
-            font-size: 0.75rem;
-            letter-spacing: 2px;
+            font-weight: 500;
+            font-size: 0.8rem;
+            color: var(--deep-black);
             text-transform: uppercase;
             text-align-last: center;
             margin-bottom: 15px;
             outline: none;
-            transition: 0.3s;
         }
-
-        select:focus { border-bottom: 1px solid var(--gold); }
 
         button {
             width: 100%;
@@ -191,23 +185,16 @@
             border: none;
             letter-spacing: 5px;
             text-transform: uppercase;
-            font-size: 0.7rem;
+            font-size: 0.8rem;
+            font-weight: 700;
             cursor: pointer;
             transition: 0.5s;
         }
 
-        button:hover { background: #1a1a1a; letter-spacing: 7px; }
+        button:hover { background: var(--deep-black); letter-spacing: 7px; }
 
-        /* Particules dorées */
-        .gold-dust {
-            position: fixed;
-            width: 4px; height: 4px;
-            background: var(--gold);
-            border-radius: 50%;
-            pointer-events: none;
-            z-index: -1;
-            animation: drift linear infinite;
-        }
+        /* PLUIE D'OR */
+        .gold-dust { position: fixed; border-radius: 50%; pointer-events: none; z-index: -1; animation: drift linear infinite; }
         @keyframes drift { to { transform: translateY(110vh) rotate(360deg); opacity: 0; } }
     </style>
 </head>
@@ -227,39 +214,37 @@
 <main id="main-content">
     <div class="gold-border">
         <div class="inner-frame">
-            <p class="info-text">Vous êtes conviés au mariage de</p>
+            <p class="info-title">L'union de deux âmes</p>
             
             <h1 class="script-names">Farah & Tarek</h1>
             
             <img src="notre-photo.jpg" alt="Farah & Tarek" class="couple-photo">
             
-            <div style="width: 40px; height: 1px; background: var(--gold); margin: 30px auto;"></div>
+            <div style="width: 50px; height: 1.5px; background: var(--gold); margin: 30px auto;"></div>
             
-            <p class="info-text" style="font-size: 1rem; color: var(--gold);">11 Avril 2026</p>
-            <p class="info-text" style="margin-top: 5px;">09:45 • Mairie d'Asnières-sur-Seine</p>
+            <p class="info-bold">Samedi 11 Avril 2026</p>
+            <p class="info-details">09:45 • Mairie d'Asnières-sur-Seine</p>
             
-            <div id="timer" style="margin: 30px 0; font-family: 'Cinzel'; letter-spacing: 3px; font-size: 1.1rem; color: var(--gold);"></div>
+            <div id="timer" style="margin: 30px 0; font-family: 'Cinzel'; letter-spacing: 3px; font-size: 1.2rem; color: var(--gold); font-weight: 700;"></div>
 
             <div class="rsvp-form">
-                <p class="info-text" style="font-size: 0.6rem; margin-bottom: 25px;">Veuillez confirmer votre présence</p>
-                
                 <form action="https://formspree.io/f/xaqdvqyk" method="POST">
                     <select name="Réponse" id="attendance" required>
-                        <option value="">Votre réponse</option>
+                        <option value="">Confirmation</option>
                         <option value="Oui">Présent(e) avec joie</option>
                         <option value="Non">Absent(e) avec regret</option>
                     </select>
 
                     <div id="guest-details" style="display:none;">
                         <select id="count" name="Nombre">
-                            <option value="1">Seul(e)</option>
+                            <option value="1">Moi uniquement</option>
                             <option value="2">Accompagné(e) (2)</option>
                             <option value="3">Famille (3+)</option>
                         </select>
                         <div id="names-list"></div>
                     </div>
 
-                    <button type="submit">Confirmer</button>
+                    <button type="submit">Confirmer ma présence</button>
                 </form>
             </div>
         </div>
@@ -280,8 +265,7 @@
     function openInvite() {
         const music = document.getElementById('bgMusic');
         document.getElementById('envelope').classList.add('open');
-        music.play();
-
+        music.play().catch(e => console.log("Interaction nécessaire"));
         setTimeout(() => {
             document.getElementById('envelope-wrapper').style.opacity = '0';
             setTimeout(() => {
@@ -316,19 +300,24 @@
             const inp = document.createElement('input');
             inp.type = 'text';
             inp.name = `Nom ${i}`;
-            inp.placeholder = `Nom complet ${i}`;
+            inp.placeholder = (val === 1) ? "Votre nom complet" : `Nom complet invité ${i}`;
             inp.required = true;
             list.appendChild(inp);
         }
     }
 
-    // Particules Dorées
+    // Création de 100 particules dorées
     function createDust() {
-        for(let i=0; i<50; i++) {
+        const colors = ['#b38b4d', '#e2c275', '#ffffff'];
+        for(let i=0; i<100; i++) {
             let d = document.createElement('div');
             d.className = 'gold-dust';
             d.style.left = Math.random() * 100 + '%';
-            d.style.animationDuration = (Math.random() * 4 + 6) + 's';
+            d.style.top = '-10px';
+            d.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
+            d.style.width = d.style.height = (Math.random() * 6 + 2) + 'px';
+            d.style.animationDuration = (Math.random() * 5 + 5) + 's';
+            d.style.animationDelay = (Math.random() * 5) + 's';
             d.style.opacity = Math.random();
             document.body.appendChild(d);
         }
