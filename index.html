@@ -11,7 +11,6 @@
             --ivoire: #fefdfb;
             --gold: #b38b4d;
             --gold-gradient: linear-gradient(45deg, #b38b4d 25%, #e2c275 50%, #b38b4d 75%);
-            /* Texture martelée propre et légère */
             --texture: url('https://www.transparenttextures.com/patterns/natural-paper.png');
         }
 
@@ -25,7 +24,7 @@
 
         body {
             overflow-x: hidden;
-            overflow-y: hidden; /* Débloqué par JS après ouverture */
+            overflow-y: hidden;
             display: flex;
             justify-content: center;
             align-items: center;
@@ -64,7 +63,6 @@
             background-image: var(--texture);
             clip-path: polygon(0% 0%, 0% 100%, 100% 100%, 100% 0%, 50% 45%);
             z-index: 3;
-            border-bottom: 1px solid rgba(0,0,0,0.05);
         }
 
         .flap {
@@ -81,7 +79,6 @@
 
         .envelope.open .flap { transform: rotateX(180deg); }
 
-        /* --- GROUPE SCEAU ET TEXTE CENTRÉ --- */
         .seal-group {
             position: relative;
             z-index: 10;
@@ -91,7 +88,7 @@
             justify-content: center;
             transition: 0.5s;
             pointer-events: none;
-            margin-top: 15%; /* Ajustement pour être sur le point de rencontre */
+            margin-top: 10%;
         }
 
         .seal {
@@ -108,7 +105,7 @@
         .open-text {
             color: var(--gold);
             font-family: 'Cinzel';
-            font-size: 0.7rem;
+            font-size: 0.75rem;
             letter-spacing: 3px;
             font-weight: bold;
             text-transform: uppercase;
@@ -149,7 +146,7 @@
 
         .cal-btn { display: inline-block; margin: 20px 0; padding: 12px 18px; border: 1px solid var(--gold); color: var(--gold); text-decoration: none; font-size: 0.7rem; font-family: 'Cinzel'; letter-spacing: 2px; text-transform: uppercase; }
 
-        button { width: 100%; padding: 18px; background: var(--gold); color: white; border: none; text-transform: uppercase; font-weight: 700; cursor: pointer; }
+        #submit-btn { width: 100%; padding: 18px; background: var(--gold); color: white; border: none; text-transform: uppercase; font-weight: 700; cursor: pointer; transition: 0.3s; letter-spacing: 1px; }
 
         .gold-dust { position: fixed; border-radius: 50%; pointer-events: none; z-index: 10000; animation: drift linear infinite; }
         @keyframes drift { to { transform: translateY(110vh); opacity: 0; } }
@@ -200,20 +197,20 @@
         <form action="https://formspree.io/f/xaqdvqyk" method="POST" style="max-width: 300px; margin: 0 auto;">
             <select name="Réponse" id="attendance" style="width: 100%; padding: 15px; border: none; border-bottom: 1px solid #ccc; background: transparent; margin-bottom: 15px;">
                 <option value="">Confirmation</option>
-                <option value="Oui">Présent(e)</option>
-                <option value="Non">Absent(e)</option>
+                <option value="Oui">Présent(e) avec joie</option>
+                <option value="Non">Absent(e) avec regret</option>
             </select>
             <div id="guest-details" style="display:none;">
                 <select id="count" name="Nombre" style="width: 100%; padding: 15px; border: none; border-bottom: 1px solid #ccc; background: transparent; margin-bottom: 15px;">
                     <option value="1">Moi uniquement</option>
-                    <option value="2">Accompagné(e)</option>
+                    <option value="2">Accompagné(e) (2 personnes)</option>
                     <option value="3">3 personnes</option>
                     <option value="4">4 personnes</option>
                     <option value="5">5 personnes</option>
                 </select>
                 <div id="names-list"></div>
             </div>
-            <button type="submit">Confirmer ma présence</button>
+            <button type="submit" id="submit-btn">Confirmer ma présence</button>
         </form>
     </div>
 </main>
@@ -234,11 +231,8 @@
             setTimeout(() => {
                 document.getElementById('envelope-wrapper').style.display = 'none';
                 document.getElementById('main-content').style.display = 'block';
-                
-                // DÉBLOCAGE DU SCROLL
                 document.body.style.overflowY = 'auto';
                 document.body.style.display = 'block'; 
-                
                 createDust();
             }, 800);
         }, 1000);
@@ -248,13 +242,33 @@
     const guestDetails = document.getElementById('guest-details');
     const count = document.getElementById('count');
     const list = document.getElementById('names-list');
+    const submitBtn = document.getElementById('submit-btn');
+
+    // LOGIQUE DYNAMIQUE DU BOUTON
+    function updateButtonText() {
+        if (att.value === 'Non') {
+            submitBtn.innerText = "Confirmer mon absence";
+        } else if (att.value === 'Oui') {
+            if (count.value === "1") {
+                submitBtn.innerText = "Je confirme ma présence";
+            } else {
+                submitBtn.innerText = "Nous confirmons notre présence";
+            }
+        } else {
+            submitBtn.innerText = "Confirmer ma présence";
+        }
+    }
 
     att.onchange = function() {
         if(this.value === 'Oui') { guestDetails.style.display = 'block'; updateInputs(); }
         else { guestDetails.style.display = 'none'; }
+        updateButtonText();
     };
 
-    count.onchange = updateInputs;
+    count.onchange = function() {
+        updateInputs();
+        updateButtonText();
+    };
 
     function updateInputs() {
         list.innerHTML = '';
@@ -262,7 +276,7 @@
         for(let i=1; i<=val; i++) {
             const inp = document.createElement('input');
             inp.type = 'text'; inp.name = `Nom Invité ${i}`;
-            inp.placeholder = `Nom complet ${i}`;
+            inp.placeholder = val === 1 ? "Votre nom complet" : `Nom complet invité ${i}`;
             inp.style.width = '100%'; inp.style.padding = '15px'; inp.style.border = 'none'; inp.style.borderBottom = '1px solid #ccc'; inp.style.background = 'transparent'; inp.style.marginBottom = '15px';
             inp.required = true;
             list.appendChild(inp);
