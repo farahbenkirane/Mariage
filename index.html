@@ -27,7 +27,7 @@
             overflow-x: hidden;
         }
 
-        /* --- DENTELLE DÉCORATIVE --- */
+        /* --- DENTELLE --- */
         .lace-border {
             position: absolute;
             left: 0; width: 100%; height: 50px;
@@ -109,7 +109,7 @@
             display: none;
             width: 95%; max-width: 650px;
             background: var(--ivoire);
-            padding: 60px 20px;
+            padding: 60px 10px; /* Réduit pour mobile */
             text-align: center;
             position: relative;
             box-shadow: 0 40px 120px rgba(0,0,0,0.05);
@@ -124,7 +124,7 @@
         }
 
         .gold-border { border: 2px solid var(--gold); padding: 10px; position: relative; }
-        .inner-frame { border: 1px solid var(--gold); padding: 40px 10px; }
+        .inner-frame { border: 1px solid var(--gold); padding: 40px 5px; }
 
         .promise-text { font-family: 'Cinzel'; font-size: 0.7rem; letter-spacing: 5px; text-transform: uppercase; margin-bottom: 5px; }
 
@@ -138,22 +138,26 @@
             animation: goldShine 4s linear infinite;
             margin: 10px 0 25px 0;
             white-space: nowrap; display: flex; justify-content: center; align-items: center; gap: 12px;
-            padding: 0 20px;
+            padding: 0 10px;
         }
 
         @keyframes goldShine { to { background-position: 200% center; } }
 
-        /* --- PHOTO AVEC CERCLE DORÉ --- */
+        /* --- PHOTO CORRIGÉE POUR MOBILE --- */
         .photo-container {
             position: relative;
-            width: 330px; height: 330px;
+            width: 100%;
+            max-width: 320px; /* Taille max sur grand écran */
+            aspect-ratio: 1 / 1;
             margin: 30px auto;
             display: flex; justify-content: center; align-items: center;
         }
 
         .couple-photo {
-            width: 310px; height: 310px;
-            object-fit: cover; border-radius: 50%;
+            width: 95%; /* S'adapte à la largeur du container */
+            height: 95%;
+            object-fit: cover; 
+            border-radius: 50%;
             border: 2px solid var(--gold);
             padding: 5px;
             background: white;
@@ -161,38 +165,32 @@
         }
 
         /* --- PROGRAMME --- */
-        .event-step { margin-bottom: 20px; }
+        .event-step { margin-bottom: 20px; padding: 0 10px; }
         .event-time { font-family: 'Cinzel'; font-weight: 700; color: var(--gold); font-size: 1.1rem; }
         
         .maps-link {
             display: inline-block; color: var(--deep-black); text-decoration: none;
-            font-family: 'Cinzel'; font-size: 0.9rem; margin-top: 5px;
+            font-family: 'Cinzel'; font-size: 0.85rem; margin-top: 5px;
             border-bottom: 1px solid rgba(179, 139, 77, 0.4); font-weight: 500;
-            transition: 0.3s;
         }
-        .maps-link:hover { color: var(--gold); border-bottom-color: var(--gold); }
 
         .cal-btn {
             display: inline-block; margin-top: 25px; padding: 10px 20px;
             border: 1px solid var(--gold); color: var(--gold);
-            text-decoration: none; font-size: 0.75rem; font-family: 'Cinzel';
+            text-decoration: none; font-size: 0.7rem; font-family: 'Cinzel';
             letter-spacing: 2px; text-transform: uppercase;
-            transition: 0.3s;
         }
-        .cal-btn:hover { background: var(--gold); color: white; }
 
         /* --- RSVP --- */
         .thanks-msg {
-            font-family: 'Montserrat'; font-style: italic; font-size: 0.85rem;
-            margin: 40px 0 15px; color: var(--gold);
+            font-family: 'Montserrat'; font-style: italic; font-size: 0.8rem;
+            margin: 40px 10px 15px; color: var(--gold);
         }
 
-        .rsvp-form { max-width: 350px; margin: 0 auto; }
-        select, input { width: 100%; padding: 18px; border: none; border-bottom: 1px solid #ccc; background: transparent; text-align-last: center; margin-bottom: 15px; outline: none; font-family: 'Montserrat'; }
-        button { width: 100%; padding: 20px; background: var(--gold); color: white; border: none; letter-spacing: 5px; text-transform: uppercase; font-weight: 700; cursor: pointer; transition: 0.4s; }
-        button:hover { background: var(--deep-black); }
+        .rsvp-form { max-width: 300px; margin: 0 auto; }
+        select, input { width: 100%; padding: 15px; border: none; border-bottom: 1px solid #ccc; background: transparent; text-align-last: center; margin-bottom: 15px; outline: none; font-family: 'Montserrat'; font-size: 0.85rem; }
+        button { width: 100%; padding: 18px; background: var(--gold); color: white; border: none; letter-spacing: 5px; text-transform: uppercase; font-weight: 700; cursor: pointer; }
 
-        /* --- EFFET WAW (600 PARTICULES) --- */
         .gold-dust { position: fixed; border-radius: 50%; pointer-events: none; z-index: -1; animation: drift linear infinite; }
         @keyframes drift { to { transform: translateY(110vh) rotate(360deg); opacity: 0; } }
     </style>
@@ -216,7 +214,7 @@
 
     <div class="gold-border">
         <div class="inner-frame">
-            <p style="font-style: italic; margin-bottom: 10px;">L'union de deux âmes</p>
+            <p style="font-style: italic; margin-bottom: 10px; font-size: 0.9rem;">L'union de deux âmes</p>
             <p class="promise-text">Jusqu'à notre dernier souffle</p>
             <h1 class="script-names">Farah <span style="font-size: 0.7em;">❤</span> Tarek</h1>
             
@@ -224,26 +222,26 @@
                 <img src="notre-photo.jpg" alt="Farah & Tarek" class="couple-photo">
             </div>
             
-            <p style="font-family: 'Cinzel'; font-weight: 700; font-size: 1.1rem; margin-bottom: 25px;">Samedi 11 Avril 2026</p>
+            <p style="font-family: 'Cinzel'; font-weight: 700; font-size: 1rem; margin-bottom: 25px;">Samedi 11 Avril 2026</p>
             
             <div class="event-step">
                 <span class="event-time">09:45</span><br>
-                <a href="https://maps.google.com/?q=Mairie+d'Asnières-sur-Seine" target="_blank" class="maps-link">
-                    Cérémonie • Mairie d'Asnières-sur-Seine 📍
+                <a href="https://maps.google.com/?q=Mairie+Asnieres-sur-Seine" target="_blank" class="maps-link">
+                    Cérémonie • Mairie d'Asnières 📍
                 </a>
             </div>
 
             <div class="event-step">
                 <span class="event-time">13:45</span><br>
                 <a href="https://share.google/ATM6Xe4TJUj33lnAm" target="_blank" class="maps-link">
-                    Déjeuner • Restaurant L'Arganier Paris 🍽️
+                    Déjeuner • Restaurant L'Arganier 🍽️
                 </a>
             </div>
             
-            <div id="timer" style="margin: 25px 0; font-family: 'Cinzel'; letter-spacing: 3px; font-size: 1.3rem; color: var(--gold); font-weight: 700;"></div>
+            <div id="timer" style="margin: 25px 0; font-family: 'Cinzel'; letter-spacing: 3px; font-size: 1.2rem; color: var(--gold); font-weight: 700;"></div>
 
-            <a href="https://www.google.com/calendar/render?action=TEMPLATE&text=Mariage+Farah+et+Tarek&dates=20260411T074500Z/20260411T160000Z&details=09:45+Cérémonie+à+la+mairie+d'Asnières-sur-Seine%0A13:45+Déjeuner+au+Restaurant+L'Arganier+Paris&location=L'Arganier+Paris+12+Rue+Feydeau+75002+Paris" target="_blank" class="cal-btn">
-                Ajouter à mon agenda
+            <a href="https://www.google.com/calendar/render?action=TEMPLATE&text=Mariage+Farah+et+Tarek&dates=20260411T074500Z/20260411T160000Z&details=09:45+Mairie+Asnieres%0A13:45+Dejeuner+L'Arganier&location=L'Arganier+Paris" target="_blank" class="cal-btn">
+                Ajouter à l'agenda
             </a>
 
             <p class="thanks-msg">Nous vous remercions du fond du cœur de partager ce moment avec nous.</p>
@@ -266,7 +264,7 @@
                         </select>
                         <div id="names-list"></div>
                     </div>
-                    <button type="submit">Confirmer ma présence</button>
+                    <button type="submit">Confirmer</button>
                 </form>
             </div>
         </div>
@@ -282,7 +280,7 @@
     function openInvite() {
         const music = document.getElementById('bgMusic');
         document.getElementById('envelope').classList.add('open');
-        music.play().catch(e => console.log("Interaction utilisateur requise"));
+        music.play().catch(e => console.log("Audio interact required"));
         setTimeout(() => {
             document.getElementById('envelope-wrapper').style.opacity = '0';
             setTimeout(() => {
@@ -311,7 +309,7 @@
         for(let i=1; i<=val; i++) {
             const inp = document.createElement('input');
             inp.type = 'text'; inp.name = `Nom Invité ${i}`;
-            inp.placeholder = (val === 1) ? "Votre nom complet" : `Nom complet invité ${i}`;
+            inp.placeholder = (val === 1) ? "Votre nom" : `Nom invité ${i}`;
             inp.required = true;
             list.appendChild(inp);
         }
@@ -325,7 +323,7 @@
             d.style.left = Math.random() * 100 + '%';
             d.style.top = (Math.random() * -150) + 'px';
             d.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
-            let size = (Math.random() * 5 + 1) + 'px';
+            let size = (Math.random() * 4 + 1) + 'px';
             d.style.width = size; d.style.height = size;
             d.style.animationDuration = (Math.random() * 7 + 3) + 's';
             d.style.animationDelay = (Math.random() * 12) + 's';
