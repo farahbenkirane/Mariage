@@ -1,232 +1,264 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="fr">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Farah & Tarek — 11 Avril 2026</title>
-    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;500&family=Montserrat:wght@200;300;400&family=Playfair+Display:ital,wght@0,400;1,400&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Pinyon+Script&family=Cinzel:wght@400;500&family=Montserrat:wght@200;300;400&display=swap" rel="stylesheet">
 
     <style>
         :root {
             --ivoire: #fefdfb;
             --gold: #b38b4d;
-            --gold-light: #d4af37;
+            --gold-gradient: linear-gradient(45deg, #b38b4d 25%, #e2c275 50%, #b38b4d 75%);
             --text: #2c2c2c;
-            --subtle: #8e8e8e;
         }
 
         * { margin: 0; padding: 0; box-sizing: border-box; }
 
         body {
             font-family: 'Montserrat', sans-serif;
-            background-color: #f7f6f2;
+            background-color: #f2efea; /* Fond légèrement plus chaud */
             color: var(--text);
             display: flex;
             justify-content: center;
             align-items: center;
             min-height: 100vh;
-            overflow-x: hidden;
+            overflow: hidden;
         }
 
-        .paper-texture {
-            background-image: url('https://www.transparenttextures.com/patterns/handmade-paper.png');
-        }
-
-        /* --- ENVELOPPE AGRANDIE --- */
+        /* --- ENVELOPPE GÉANTE ET RÉALISTE --- */
         #envelope-wrapper {
             position: fixed;
             top: 0; left: 0; width: 100%; height: 100%;
-            background: #f7f6f2;
+            background: #f2efea;
             display: flex;
-            flex-direction: column;
             justify-content: center;
             align-items: center;
             z-index: 9999;
-            transition: opacity 1.2s cubic-bezier(0.4, 0, 0.2, 1);
+            transition: opacity 1.5s ease;
         }
 
         .envelope {
             position: relative;
-            width: 450px; /* Largeur agrandie */
-            height: 300px; /* Hauteur agrandie */
+            width: 550px; /* Taille augmentée */
+            height: 380px;
             background: #ffffff;
-            box-shadow: 0 40px 80px rgba(0,0,0,0.06);
+            box-shadow: 0 50px 100px rgba(0,0,0,0.08), 0 15px 35px rgba(0,0,0,0.05);
             cursor: pointer;
-            border: 1px solid rgba(0,0,0,0.02);
-            max-width: 90vw; /* Sécurité mobile */
+            perspective: 1500px;
         }
 
-        /* Le rabat de l'enveloppe */
+        /* Rabat supérieur */
         .envelope::before {
             content: "";
             position: absolute;
             top: 0; left: 0;
             width: 0; height: 0;
-            border-top: 170px solid #fcfcfc; /* Ajusté pour la nouvelle taille */
-            border-left: 225px solid transparent; /* Moitié de 450px */
-            border-right: 225px solid transparent;
-            z-index: 2;
-            transition: transform 1s cubic-bezier(0.6, 0.05, 0.1, 0.9);
+            border-top: 210px solid #ffffff;
+            border-left: 275px solid transparent;
+            border-right: 275px solid transparent;
+            z-index: 4;
             transform-origin: top;
+            transition: transform 1.2s cubic-bezier(0.4, 0, 0.2, 1);
+            filter: drop-shadow(0 5px 5px rgba(0,0,0,0.05));
         }
 
-        .envelope.open::before { transform: rotateX(180deg); }
+        .envelope.open::before {
+            transform: rotateX(180deg);
+            z-index: 1;
+        }
 
+        /* Sceau de cire premium */
         .seal {
             position: absolute;
-            top: 140px; /* Centré verticalement sur la nouvelle taille */
-            left: 50%;
+            top: 175px; left: 50%;
             transform: translateX(-50%);
-            width: 70px; /* Sceau agrandi */
-            height: 70px;
-            background: radial-gradient(circle, #d4af37, #b38b4d);
+            width: 85px; height: 85px;
+            background: radial-gradient(circle at 30% 30%, #d4af37, #b38b4d);
             border-radius: 50%;
-            z-index: 3;
+            z-index: 5;
             display: flex;
             justify-content: center;
             align-items: center;
             color: white;
             font-family: 'Cinzel', serif;
-            font-size: 1.3rem;
-            box-shadow: 0 8px 20px rgba(179, 139, 77, 0.4);
-            transition: 0.6s ease;
+            font-size: 1.6rem;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.2), inset 0 0 10px rgba(0,0,0,0.1);
+            transition: 0.6s cubic-bezier(0.4, 0, 0.2, 1);
         }
 
-        .envelope.open .seal { opacity: 0; transform: translateX(-50%) scale(0.5); }
+        .envelope.open .seal { opacity: 0; transform: translateX(-50%) scale(0.2); }
 
-        /* --- CARTE D'INVITATION --- */
+        /* --- CARTE D'INVITATION GLISSANTE --- */
         #main-content {
             display: none;
-            width: 90%;
-            max-width: 550px;
+            width: 95%;
+            max-width: 600px;
             background: var(--ivoire);
-            padding: 60px 30px;
+            padding: 60px 40px;
             text-align: center;
             position: relative;
-            box-shadow: 0 40px 100px rgba(0,0,0,0.03);
+            box-shadow: 0 40px 120px rgba(0,0,0,0.05);
             border: 1px solid rgba(179, 139, 77, 0.2);
-            animation: cardReveal 2s cubic-bezier(0.19, 1, 0.22, 1) forwards;
+            animation: cardSlideOut 2.5s cubic-bezier(0.19, 1, 0.22, 1) forwards;
+            background-image: url('https://www.transparenttextures.com/patterns/cream-paper.png');
         }
 
-        @keyframes cardReveal {
-            from { transform: translateY(80px); opacity: 0; }
-            to { transform: translateY(0); opacity: 1; }
+        @keyframes cardSlideOut {
+            0% { transform: translateY(200px) scale(0.8); opacity: 0; }
+            100% { transform: translateY(0) scale(1); opacity: 1; }
         }
 
-        .double-border { border: 1px solid var(--gold); padding: 10px; position: relative; }
-        .inner-content { border: 0.5px solid var(--gold); padding: 40px 20px; }
+        .gold-border {
+            border: 2px solid var(--gold);
+            padding: 10px;
+            margin: 10px;
+        }
 
-        h1 {
-            font-family: 'Playfair Display', serif;
-            font-size: clamp(30px, 8vw, 48px);
-            color: var(--gold);
-            font-weight: 400;
-            letter-spacing: 2px;
+        .inner-frame {
+            border: 1px solid var(--gold);
+            padding: 40px 20px;
+        }
+
+        /* Typographie */
+        .script-names {
+            font-family: 'Pinyon Script', cursive;
+            font-size: clamp(50px, 12vw, 85px);
+            background: var(--gold-gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-size: 200% auto;
+            animation: goldShine 4s linear infinite;
             margin: 20px 0;
-            font-style: italic;
+        }
+
+        @keyframes goldShine {
+            to { background-position: 200% center; }
         }
 
         .couple-photo {
-            width: 200px;
-            height: 200px;
+            width: 230px;
+            height: 230px;
             object-fit: cover;
             border-radius: 50%;
             border: 1px solid var(--gold);
-            padding: 8px;
+            padding: 10px;
             margin: 30px auto;
+            box-shadow: 0 15px 35px rgba(0,0,0,0.1);
         }
 
-        .section-title {
+        .info-text {
             font-family: 'Cinzel', serif;
-            font-size: 0.75rem;
-            letter-spacing: 5px;
-            color: var(--subtle);
+            letter-spacing: 4px;
             text-transform: uppercase;
+            font-size: 0.8rem;
+            color: var(--subtle);
             margin-bottom: 10px;
         }
 
-        .gold-divider { width: 40px; height: 1px; background: var(--gold); margin: 30px auto; }
-
-        /* --- RSVP --- */
-        .rsvp-container { margin-top: 50px; padding-top: 40px; border-top: 1px solid rgba(179, 139, 77, 0.1); }
+        /* RSVP Minimaliste */
+        .rsvp-form {
+            margin-top: 50px;
+            max-width: 350px;
+            margin-left: auto;
+            margin-right: auto;
+        }
 
         select, input {
             width: 100%;
-            padding: 15px;
-            margin-bottom: 15px;
+            padding: 18px;
             border: none;
-            border-bottom: 1px solid #e0e0e0;
-            font-family: 'Montserrat', sans-serif;
-            font-weight: 300;
-            font-size: 0.8rem;
+            border-bottom: 1px solid rgba(179, 139, 77, 0.3);
             background: transparent;
-            text-align: center;
-            transition: border-color 0.3s;
+            font-family: 'Montserrat';
+            font-size: 0.75rem;
+            letter-spacing: 2px;
             text-transform: uppercase;
-            letter-spacing: 1px;
+            text-align-last: center;
+            margin-bottom: 15px;
+            outline: none;
+            transition: 0.3s;
         }
+
+        select:focus { border-bottom: 1px solid var(--gold); }
 
         button {
             width: 100%;
-            padding: 18px;
+            padding: 20px;
             background: var(--gold);
             color: white;
             border: none;
-            letter-spacing: 4px;
+            letter-spacing: 5px;
             text-transform: uppercase;
             font-size: 0.7rem;
             cursor: pointer;
-            transition: all 0.4s;
-            margin-top: 20px;
+            transition: 0.5s;
         }
 
-        button:hover { background: #000; letter-spacing: 6px; }
+        button:hover { background: #1a1a1a; letter-spacing: 7px; }
 
-        .particle { position: fixed; top: -10px; border-radius: 50%; opacity: 0.6; z-index: -1; animation: fall linear infinite; }
-        @keyframes fall { to { transform: translateY(110vh) rotate(360deg); } }
+        /* Particules dorées */
+        .gold-dust {
+            position: fixed;
+            width: 4px; height: 4px;
+            background: var(--gold);
+            border-radius: 50%;
+            pointer-events: none;
+            z-index: -1;
+            animation: drift linear infinite;
+        }
+        @keyframes drift { to { transform: translateY(110vh) rotate(360deg); opacity: 0; } }
     </style>
 </head>
-<body class="paper-texture">
+<body>
 
 <audio id="bgMusic" loop>
     <source src="musique.m4a" type="audio/x-m4a">
 </audio>
 
 <div id="envelope-wrapper">
-    <div class="envelope" id="envelope" onclick="openLetter()">
+    <div class="envelope" id="envelope" onclick="openInvite()">
         <div class="seal">FT</div>
     </div>
-    <p style="margin-top: 50px; color: var(--gold); letter-spacing: 8px; font-size: 0.7rem; font-family: 'Cinzel';">OUVRIR L'INVITATION</p>
+    <p style="position: absolute; bottom: 10%; color: var(--gold); letter-spacing: 8px; font-family: 'Cinzel'; font-size: 0.7rem;">Invitation Personnelle</p>
 </div>
 
-<main id="main-content" class="paper-texture">
-    <div class="double-border">
-        <div class="inner-content">
-            <p class="section-title">L'union de deux âmes</p>
-            <h1>Farah & Tarek</h1>
+<main id="main-content">
+    <div class="gold-border">
+        <div class="inner-frame">
+            <p class="info-text">Vous êtes conviés au mariage de</p>
+            
+            <h1 class="script-names">Farah & Tarek</h1>
+            
             <img src="notre-photo.jpg" alt="Farah & Tarek" class="couple-photo">
-            <div class="gold-divider"></div>
-            <p style="font-family: 'Cinzel'; font-size: 0.9rem; letter-spacing: 2px;">Samedi 11 Avril 2026</p>
-            <p style="margin-top: 10px; font-weight: 200; font-size: 0.8rem; letter-spacing: 2px;">09H45 • MAIRIE D'ASNIÈRES-SUR-SEINE</p>
-            <div id="timer" style="margin: 30px 0; font-family: 'Cinzel'; font-size: 1rem; color: var(--gold); letter-spacing: 3px;"></div>
-            <div class="rsvp-container">
-                <p class="section-title">Réponse souhaitée</p>
+            
+            <div style="width: 40px; height: 1px; background: var(--gold); margin: 30px auto;"></div>
+            
+            <p class="info-text" style="font-size: 1rem; color: var(--gold);">11 Avril 2026</p>
+            <p class="info-text" style="margin-top: 5px;">09:45 • Mairie d'Asnières-sur-Seine</p>
+            
+            <div id="timer" style="margin: 30px 0; font-family: 'Cinzel'; letter-spacing: 3px; font-size: 1.1rem; color: var(--gold);"></div>
+
+            <div class="rsvp-form">
+                <p class="info-text" style="font-size: 0.6rem; margin-bottom: 25px;">Veuillez confirmer votre présence</p>
+                
                 <form action="https://formspree.io/f/xaqdvqyk" method="POST">
-                    <select name="Présence" id="presence" required>
-                        <option value="">Confirmation</option>
-                        <option value="Oui">PRÉSENT(E) AVEC JOIE</option>
-                        <option value="Non">ABSENT(E) AVEC REGRET</option>
+                    <select name="Réponse" id="attendance" required>
+                        <option value="">Votre réponse</option>
+                        <option value="Oui">Présent(e) avec joie</option>
+                        <option value="Non">Absent(e) avec regret</option>
                     </select>
-                    <div id="guest-block" style="display:none;">
-                        <select id="guest-count" name="Nombre de personnes">
-                            <option value="1">MOI UNIQUEMENT</option>
-                            <option value="2">DEUX PERSONNES</option>
-                            <option value="3">TROIS PERSONNES</option>
-                            <option value="4">QUATRE PERSONNES</option>
-                            <option value="5">CINQ PERSONNES</option>
+
+                    <div id="guest-details" style="display:none;">
+                        <select id="count" name="Nombre">
+                            <option value="1">Seul(e)</option>
+                            <option value="2">Accompagné(e) (2)</option>
+                            <option value="3">Famille (3+)</option>
                         </select>
-                        <div id="names-container"></div>
+                        <div id="names-list"></div>
                     </div>
+
                     <button type="submit">Confirmer</button>
                 </form>
             </div>
@@ -236,79 +268,80 @@
 
 <script>
     // Mot de passe
-    window.addEventListener('load', () => {
-        let p = prompt("Veuillez entrer votre code d'accès personnel :");
+    window.onload = () => {
+        let p = prompt("Code secret :");
         if (p !== "FarahTarek2026") {
-            alert("Code incorrect.");
+            document.body.innerHTML = "";
             window.location.reload();
         }
-    });
+    };
 
     // Ouverture
-    function openLetter() {
+    function openInvite() {
         const music = document.getElementById('bgMusic');
         document.getElementById('envelope').classList.add('open');
         music.play();
+
         setTimeout(() => {
             document.getElementById('envelope-wrapper').style.opacity = '0';
             setTimeout(() => {
                 document.getElementById('envelope-wrapper').style.display = 'none';
                 document.getElementById('main-content').style.display = 'block';
-                createLuxeParticles();
+                createDust();
             }, 1000);
         }, 1200);
     }
 
-    // Formulaire
-    const presence = document.getElementById('presence');
-    const guestBlock = document.getElementById('guest-block');
-    const guestCount = document.getElementById('guest-count');
-    const namesContainer = document.getElementById('names-container');
+    // RSVP
+    const att = document.getElementById('attendance');
+    const guestDetails = document.getElementById('guest-details');
+    const count = document.getElementById('count');
+    const list = document.getElementById('names-list');
 
-    presence.onchange = function() {
+    att.onchange = function() {
         if(this.value === 'Oui') {
-            guestBlock.style.display = 'block';
+            guestDetails.style.display = 'block';
             updateInputs();
         } else {
-            guestBlock.style.display = 'none';
+            guestDetails.style.display = 'none';
         }
     };
 
-    guestCount.onchange = updateInputs;
+    count.onchange = updateInputs;
 
     function updateInputs() {
-        namesContainer.innerHTML = '';
-        for(let i=1; i<=guestCount.value; i++) {
-            const input = document.createElement('input');
-            input.type = 'text';
-            input.name = `Nom Invité ${i}`;
-            input.placeholder = (guestCount.value == 1) ? "VOTRE NOM COMPLET" : `NOM DE L'INVITÉ ${i}`;
-            input.required = true;
-            namesContainer.appendChild(input);
+        list.innerHTML = '';
+        let val = parseInt(count.value);
+        for(let i=1; i<=val; i++) {
+            const inp = document.createElement('input');
+            inp.type = 'text';
+            inp.name = `Nom ${i}`;
+            inp.placeholder = `Nom complet ${i}`;
+            inp.required = true;
+            list.appendChild(inp);
         }
     }
 
-    function createLuxeParticles() {
-        const colors = ['#ffffff', '#d4af37', '#f4f1ea'];
-        for(let i=0; i<40; i++) {
-            let p = document.createElement('div');
-            p.className = 'particle';
-            p.style.left = Math.random() * 100 + '%';
-            p.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
-            p.style.width = p.style.height = (Math.random() * 5 + 3) + 'px';
-            p.style.animationDuration = (Math.random() * 6 + 8) + 's';
-            document.body.appendChild(p);
+    // Particules Dorées
+    function createDust() {
+        for(let i=0; i<50; i++) {
+            let d = document.createElement('div');
+            d.className = 'gold-dust';
+            d.style.left = Math.random() * 100 + '%';
+            d.style.animationDuration = (Math.random() * 4 + 6) + 's';
+            d.style.opacity = Math.random();
+            document.body.appendChild(d);
         }
     }
 
-    const target = new Date("April 11, 2026 09:45:00").getTime();
+    // Timer
+    const date = new Date("April 11, 2026 09:45:00").getTime();
     setInterval(() => {
-        const now = new Date().getTime();
-        const diff = target - now;
+        const diff = date - new Date().getTime();
         const d = Math.floor(diff / (1000 * 60 * 60 * 24));
         const h = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
         const m = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
-        document.getElementById('timer').innerText = d + "D : " + h + "H : " + m + "M";
+        document.getElementById('timer').innerText = d + "j • " + h + "h • " + m + "m";
     }, 1000);
 </script>
 
