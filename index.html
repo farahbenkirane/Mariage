@@ -27,7 +27,7 @@
             overflow-x: hidden;
         }
 
-        /* --- DENTELLE --- */
+        /* --- DENTELLE DÉCORATIVE --- */
         .lace-border {
             position: absolute;
             left: 0; width: 100%; height: 50px;
@@ -59,6 +59,7 @@
             box-shadow: 0 50px 100px rgba(0,0,0,0.08);
             cursor: pointer;
             perspective: 1500px;
+            max-width: 90vw;
         }
 
         .envelope::before {
@@ -103,7 +104,7 @@
             100% { transform: translateX(100%) rotate(45deg); }
         }
 
-        /* --- CARTE --- */
+        /* --- CARTE D'INVITATION --- */
         #main-content {
             display: none;
             width: 95%; max-width: 650px;
@@ -114,8 +115,15 @@
             box-shadow: 0 40px 120px rgba(0,0,0,0.05);
             border: 1px solid rgba(179, 139, 77, 0.2);
             animation: cardSlideOut 2.5s cubic-bezier(0.19, 1, 0.22, 1) forwards;
+            background-image: url('https://www.transparenttextures.com/patterns/cream-paper.png');
         }
 
+        @keyframes cardSlideOut {
+            0% { transform: translateY(200px) scale(0.8); opacity: 0; }
+            100% { transform: translateY(0) scale(1); opacity: 1; }
+        }
+
+        .gold-border { border: 2px solid var(--gold); padding: 10px; position: relative; }
         .inner-frame { border: 1px solid var(--gold); padding: 40px 10px; }
 
         .promise-text { font-family: 'Cinzel'; font-size: 0.7rem; letter-spacing: 5px; text-transform: uppercase; margin-bottom: 5px; }
@@ -132,6 +140,8 @@
             white-space: nowrap; display: flex; justify-content: center; align-items: center; gap: 12px;
             padding: 0 20px;
         }
+
+        @keyframes goldShine { to { background-position: 200% center; } }
 
         /* --- PHOTO AVEC CERCLE DORÉ --- */
         .photo-container {
@@ -150,6 +160,7 @@
             z-index: 2;
         }
 
+        /* --- LIENS ET BOUTONS --- */
         .maps-link {
             display: inline-block; color: var(--deep-black); text-decoration: none;
             font-family: 'Cinzel'; font-size: 0.95rem; margin-top: 10px;
@@ -161,18 +172,22 @@
             border: 1px solid var(--gold); color: var(--gold);
             text-decoration: none; font-size: 0.75rem; font-family: 'Cinzel';
             letter-spacing: 2px; text-transform: uppercase;
+            transition: 0.3s;
         }
+        .cal-btn:hover { background: var(--gold); color: white; }
 
-        /* --- RSVP --- */
+        /* --- FORMULAIRE RSVP --- */
         .thanks-msg {
             font-family: 'Montserrat'; font-style: italic; font-size: 0.85rem;
             margin: 40px 0 15px; color: var(--gold);
         }
 
         .rsvp-form { max-width: 350px; margin: 0 auto; }
-        select, input { width: 100%; padding: 18px; border: none; border-bottom: 1px solid #ccc; background: transparent; text-align-last: center; margin-bottom: 15px; outline: none; }
-        button { width: 100%; padding: 20px; background: var(--gold); color: white; border: none; letter-spacing: 5px; text-transform: uppercase; font-weight: 700; cursor: pointer; }
+        select, input { width: 100%; padding: 18px; border: none; border-bottom: 1px solid #ccc; background: transparent; text-align-last: center; margin-bottom: 15px; outline: none; font-family: 'Montserrat'; }
+        button { width: 100%; padding: 20px; background: var(--gold); color: white; border: none; letter-spacing: 5px; text-transform: uppercase; font-weight: 700; cursor: pointer; transition: 0.4s; }
+        button:hover { background: var(--deep-black); }
 
+        /* --- EFFET WAW (600 PARTICULES) --- */
         .gold-dust { position: fixed; border-radius: 50%; pointer-events: none; z-index: -1; animation: drift linear infinite; }
         @keyframes drift { to { transform: translateY(110vh) rotate(360deg); opacity: 0; } }
     </style>
@@ -206,10 +221,113 @@
             
             <p style="font-family: 'Cinzel'; font-weight: 700; font-size: 1.1rem;">Samedi 11 Avril 2026</p>
             
-            <a href="http://googleusercontent.com/maps.google.com/5" target="_blank" class="maps-link">
+            <a href="https://maps.google.com/?q=Mairie+d'Asnières-sur-Seine" target="_blank" class="maps-link">
                 09:45 • Mairie d'Asnières-sur-Seine 📍
             </a>
             
             <div id="timer" style="margin: 20px 0; font-family: 'Cinzel'; letter-spacing: 3px; font-size: 1.3rem; color: var(--gold); font-weight: 700;"></div>
 
-            <a href="
+            <a href="https://www.google.com/calendar/render?action=TEMPLATE&text=Mariage+Farah+et+Tarek&dates=20260411T074500Z/20260411T120000Z&details=Cérémonie+à+la+mairie+d'Asnières-sur-Seine&location=Mairie+d'Asnières-sur-Seine" target="_blank" class="cal-btn">
+                Ajouter à mon agenda
+            </a>
+
+            <p class="thanks-msg">Nous vous remercions du fond du cœur de partager ce moment avec nous.</p>
+
+            <div class="rsvp-form">
+                <form action="https://formspree.io/f/xaqdvqyk" method="POST">
+                    <select name="Réponse" id="attendance" required>
+                        <option value="">Confirmation</option>
+                        <option value="Oui">Présent(e) avec joie</option>
+                        <option value="Non">Absent(e) avec regret</option>
+                    </select>
+
+                    <div id="guest-details" style="display:none;">
+                        <select id="count" name="Nombre de personnes">
+                            <option value="1">Moi uniquement</option>
+                            <option value="2">Accompagné(e) (2 personnes)</option>
+                            <option value="3">3 personnes</option>
+                            <option value="4">4 personnes</option>
+                            <option value="5">5 personnes</option>
+                        </select>
+                        <div id="names-list"></div>
+                    </div>
+                    <button type="submit">Confirmer ma présence</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</main>
+
+<script>
+    window.onload = () => {
+        let p = prompt("Code secret :");
+        if (p !== "FarahTarek2026") { document.body.innerHTML = ""; window.location.reload(); }
+    };
+
+    function openInvite() {
+        const music = document.getElementById('bgMusic');
+        document.getElementById('envelope').classList.add('open');
+        music.play().catch(e => console.log("Musique attendue"));
+        setTimeout(() => {
+            document.getElementById('envelope-wrapper').style.opacity = '0';
+            setTimeout(() => {
+                document.getElementById('envelope-wrapper').style.display = 'none';
+                document.getElementById('main-content').style.display = 'block';
+                createDust();
+            }, 1000);
+        }, 1200);
+    }
+
+    const att = document.getElementById('attendance');
+    const guestDetails = document.getElementById('guest-details');
+    const count = document.getElementById('count');
+    const list = document.getElementById('names-list');
+
+    att.onchange = function() {
+        if(this.value === 'Oui') { guestDetails.style.display = 'block'; updateInputs(); }
+        else { guestDetails.style.display = 'none'; }
+    };
+
+    count.onchange = updateInputs;
+
+    function updateInputs() {
+        list.innerHTML = '';
+        let val = parseInt(count.value);
+        for(let i=1; i<=val; i++) {
+            const inp = document.createElement('input');
+            inp.type = 'text'; inp.name = `Nom Invité ${i}`;
+            inp.placeholder = (val === 1) ? "Votre nom complet" : `Nom complet invité ${i}`;
+            inp.required = true;
+            list.appendChild(inp);
+        }
+    }
+
+    function createDust() {
+        const colors = ['#b38b4d', '#e2c275', '#ffffff', '#fffaf0', '#d4af37'];
+        for(let i=0; i<600; i++) {
+            let d = document.createElement('div');
+            d.className = 'gold-dust';
+            d.style.left = Math.random() * 100 + '%';
+            d.style.top = (Math.random() * -150) + 'px';
+            d.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
+            let size = (Math.random() * 5 + 1) + 'px';
+            d.style.width = size; d.style.height = size;
+            d.style.animationDuration = (Math.random() * 7 + 3) + 's';
+            d.style.animationDelay = (Math.random() * 12) + 's';
+            d.style.opacity = Math.random() * 0.9;
+            document.body.appendChild(d);
+        }
+    }
+
+    const date = new Date("April 11, 2026 09:45:00").getTime();
+    setInterval(() => {
+        const diff = date - new Date().getTime();
+        const d = Math.floor(diff / (1000 * 60 * 60 * 24));
+        const h = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+        const m = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+        document.getElementById('timer').innerText = d + "j • " + h + "h • " + m + "m";
+    }, 1000);
+</script>
+
+</body>
+</html>
