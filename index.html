@@ -11,9 +11,6 @@
             --ivoire: #fefdfb;
             --gold: #b38b4d;
             --gold-gradient: linear-gradient(45deg, #b38b4d 25%, #e2c275 50%, #b38b4d 75%);
-            --deep-black: #1a1a1a;
-            /* Texture martelée / grainée */
-            --hammered-texture: url('https://www.transparenttextures.com/patterns/natural-paper.png');
         }
 
         * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -25,10 +22,14 @@
             justify-content: center;
             align-items: center;
             min-height: 100vh;
-            overflow: hidden;
+            /* Bloqué au départ pour l'enveloppe, réactivé par JS après ouverture */
+            overflow: hidden; 
         }
 
-        /* --- ENVELOPPE MARTELÉE --- */
+        /* --- FILTRE MARTELÉ --- */
+        .hammered { filter: url(#hammered-effect); }
+
+        /* --- ENVELOPPE --- */
         #envelope-wrapper {
             position: fixed;
             top: 0; left: 0; width: 100%; height: 100%;
@@ -38,215 +39,177 @@
             justify-content: center;
             align-items: center;
             z-index: 9999;
-            transition: opacity 1.5s ease;
-            padding: 20px;
+            transition: opacity 1.5s ease, visibility 1.5s;
         }
 
         .envelope {
             position: relative;
-            width: 100%;
+            width: 90%;
             max-width: 500px;
             aspect-ratio: 3 / 2;
             background-color: #ffffff;
-            background-image: var(--hammered-texture);
             box-shadow: 0 40px 80px rgba(0,0,0,0.15);
             cursor: pointer;
-            /* L'effet martelé est accentué par ce filtre */
-            filter: contrast(105%) brightness(98%);
         }
 
-        /* Corps de l'enveloppe */
-        .envelope::after {
-            content: "";
+        .pocket {
             position: absolute;
-            bottom: 0; left: 0;
-            width: 100%; height: 100%;
+            bottom: 0; left: 0; width: 100%; height: 100%;
             background-color: #fcfaf7;
-            background-image: var(--hammered-texture);
-            clip-path: polygon(0 0, 0% 100%, 100% 100%, 100% 0, 50% 50%);
+            clip-path: polygon(0% 0%, 0% 100%, 100% 100%, 100% 0%, 50% 45%);
             z-index: 3;
-            border: 1px solid rgba(0,0,0,0.02);
         }
 
-        /* Rabat martelé */
         .flap {
             position: absolute;
-            top: 0; left: 0;
-            width: 100%; height: 100%;
+            top: 0; left: 0; width: 100%; height: 100%;
             background-color: #ffffff;
-            background-image: var(--hammered-texture);
-            clip-path: polygon(0 0, 50% 55%, 100% 0);
+            clip-path: polygon(0 0, 50% 50%, 100% 0);
             z-index: 4;
             transition: transform 1.2s cubic-bezier(0.4, 0, 0.2, 1);
             transform-origin: top;
-            filter: drop-shadow(0 8px 6px rgba(0,0,0,0.12));
+            filter: drop-shadow(0 10px 8px rgba(0,0,0,0.1));
         }
 
         .envelope.open .flap { transform: rotateX(180deg); z-index: 1; }
 
-        /* SCEAU ANCIEN FONDUE */
-        .seal {
+        .seal-container {
             position: absolute;
-            top: 55%; left: 50%;
+            top: 45%; left: 50%;
             transform: translate(-50%, -50%);
-            width: 95px; height: 95px;
-            background: radial-gradient(circle at 30% 30%, #e2c275, #b38b4d, #8a6d3b);
-            border-radius: 46% 54% 49% 51% / 53% 47% 55% 45%; /* Forme fondue */
             z-index: 10;
             display: flex;
-            justify-content: center;
+            flex-direction: column;
             align-items: center;
-            box-shadow: 4px 12px 25px rgba(0,0,0,0.35), inset -3px -3px 10px rgba(0,0,0,0.4);
-            transition: 0.7s ease-in-out;
+            transition: 0.7s;
         }
 
-        .seal-initials {
+        .seal {
+            width: 90px; height: 90px;
+            background: radial-gradient(circle at 30% 30%, #e2c275, #b38b4d, #8a6d3b);
+            border-radius: 46% 54% 50% 50% / 53% 47% 53% 47%;
+            display: flex; justify-content: center; align-items: center;
+            box-shadow: 4px 12px 20px rgba(0,0,0,0.3), inset -2px -2px 5px rgba(0,0,0,0.5);
             font-family: 'Pinyon Script', cursive;
-            color: rgba(255, 255, 255, 0.95);
-            font-size: 1.9rem;
-            text-shadow: 1px 2px 4px rgba(0,0,0,0.4);
-            pointer-events: none;
+            color: white; font-size: 1.8rem;
         }
 
-        .envelope.open .seal { opacity: 0; transform: translate(-50%, -150%) scale(0); }
+        .envelope.open .seal-container { opacity: 0; visibility: hidden; }
 
         .open-text {
-            margin-top: 60px;
+            margin-top: 25px;
             color: var(--gold);
-            letter-spacing: 5px;
+            letter-spacing: 4px;
             font-family: 'Cinzel';
-            font-size: 0.75rem;
-            text-transform: uppercase;
+            font-size: 0.8rem;
+            font-weight: bold;
+            text-shadow: 0 0 10px white;
             animation: pulse 2s infinite;
         }
 
-        @keyframes pulse { 0%, 100% { opacity: 0.5; } 50% { opacity: 1; } }
+        @keyframes pulse { 0%, 100% { opacity: 0.6; } 50% { opacity: 1; } }
 
         /* --- CARTE D'INVITATION --- */
         #main-content {
             display: none;
-            width: 95%; max-width: 600px;
+            width: 95%;
+            max-width: 600px;
             background: var(--ivoire);
-            background-image: var(--hammered-texture);
-            padding: 50px 10px;
+            padding: 50px 15px;
+            margin: 40px 0; /* Ajouté pour donner de l'espace au défilement */
             text-align: center;
             position: relative;
             box-shadow: 0 40px 100px rgba(0,0,0,0.05);
             border: 1px solid rgba(179, 139, 77, 0.2);
-            animation: cardSlideOut 2s ease forwards;
         }
 
-        @keyframes cardSlideOut { 0% { transform: translateY(100px); opacity: 0; } 100% { transform: translateY(0); opacity: 1; } }
+        .inner-frame { border: 1px solid var(--gold); padding: 35px 10px; }
+        .script-names { font-family: 'Pinyon Script', cursive; font-size: clamp(35px, 9vw, 75px); background: var(--gold-gradient); -webkit-background-clip: text; -webkit-text-fill-color: transparent; margin: 15px 0; }
 
-        .gold-border { border: 2px solid var(--gold); padding: 8px; }
-        .inner-frame { border: 1px solid var(--gold); padding: 35px 5px; }
-
-        .script-names {
-            font-family: 'Pinyon Script', cursive;
-            font-size: clamp(32px, 9vw, 70px);
-            background: var(--gold-gradient);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            margin: 10px 0 20px 0;
-            display: flex; justify-content: center; align-items: center; gap: 8px;
-        }
-
-        .photo-container { 
-            width: 260px; height: 260px; 
-            max-width: 75vw; max-height: 75vw; 
-            margin: 25px auto; 
-            border-radius: 50%; 
-            border: 2px solid var(--gold); 
-            padding: 5px; 
-            background: white; 
-            overflow: hidden; 
-        }
+        .photo-container { width: 260px; height: 260px; max-width: 70vw; max-height: 70vw; margin: 25px auto; border-radius: 50%; border: 2px solid var(--gold); padding: 5px; background: white; overflow: hidden; }
         .couple-photo { width: 100%; height: 100%; object-fit: cover; border-radius: 50%; }
 
-        .event-time { font-family: 'Cinzel'; font-weight: 700; color: var(--gold); font-size: 1.1rem; display: block; margin-top: 15px; }
-        .maps-link { display: inline-block; color: var(--deep-black); text-decoration: none; font-family: 'Cinzel'; font-size: 0.85rem; border-bottom: 1px solid var(--gold); margin-bottom: 5px; }
+        .event-time { font-family: 'Cinzel'; font-weight: 700; color: var(--gold); font-size: 1.1rem; display: block; margin-top: 20px; }
+        .maps-link { display: inline-block; color: #1a1a1a; text-decoration: none; font-family: 'Cinzel'; font-size: 0.85rem; border-bottom: 1px solid var(--gold); margin-bottom: 10px; }
 
-        .cal-btn { display: inline-block; margin-top: 25px; padding: 10px 15px; border: 1px solid var(--gold); color: var(--gold); text-decoration: none; font-size: 0.7rem; font-family: 'Cinzel'; letter-spacing: 2px; text-transform: uppercase; }
+        .cal-btn { display: inline-block; margin: 25px 0; padding: 12px 20px; border: 1px solid var(--gold); color: var(--gold); text-decoration: none; font-size: 0.75rem; font-family: 'Cinzel'; letter-spacing: 2px; text-transform: uppercase; }
 
-        .rsvp-form { max-width: 280px; margin: 40px auto 0; }
-        select, input { width: 100%; padding: 12px; border: none; border-bottom: 1px solid #ccc; background: transparent; text-align-last: center; margin-bottom: 10px; font-size: 0.85rem; outline: none; }
-        button { width: 100%; padding: 16px; background: var(--gold); color: white; border: none; text-transform: uppercase; font-weight: 700; cursor: pointer; letter-spacing: 3px; }
+        button { width: 100%; padding: 18px; background: var(--gold); color: white; border: none; text-transform: uppercase; font-weight: 700; cursor: pointer; letter-spacing: 3px; margin-top: 20px; }
 
-        /* --- BOULES SCINTILLANTES (AVANT-PLAN) --- */
-        .gold-dust { 
-            position: fixed; 
-            border-radius: 50%; 
-            pointer-events: none; 
-            z-index: 10000; 
-            animation: drift linear infinite; 
-        }
+        /* --- BOULES SCINTILLANTES --- */
+        .gold-dust { position: fixed; border-radius: 50%; pointer-events: none; z-index: 10000; animation: drift linear infinite; }
         @keyframes drift { to { transform: translateY(110vh); opacity: 0; } }
     </style>
 </head>
 <body>
+
+<svg style="display: none;">
+    <filter id="hammered-effect">
+        <feTurbulence type="fractalNoise" baseFrequency="0.04" numOctaves="5" result="noise" />
+        <feDiffuseLighting in="noise" lighting-color="#ffffff" surfaceScale="2.5">
+            <feDistantLight azimuth="45" elevation="55" />
+        </feDiffuseLighting>
+    </filter>
+</svg>
 
 <audio id="bgMusic" loop>
     <source src="musique.m4a" type="audio/x-m4a">
 </audio>
 
 <div id="envelope-wrapper">
-    <div class="envelope" id="envelope" onclick="openInvite()">
-        <div class="flap"></div>
-        <div class="seal">
-            <span class="seal-initials">F & T</span>
+    <div class="envelope hammered" id="envelope" onclick="openInvite()">
+        <div class="flap hammered"></div>
+        <div class="pocket hammered"></div>
+        <div class="seal-container">
+            <div class="seal">F & T</div>
+            <p class="open-text">Ouvrir l'invitation</p>
         </div>
     </div>
-    <p class="open-text">Ouvrir l'invitation</p>
 </div>
 
-<main id="main-content">
-    <div class="gold-border">
-        <div class="inner-frame">
-            <p style="font-style: italic; margin-bottom: 5px; font-size: 0.85rem;">L'union de deux âmes</p>
-            <p style="font-family: 'Cinzel'; font-size: 0.7rem; letter-spacing: 3px; text-transform: uppercase;">Jusqu'à notre dernier souffle</p>
-            
-            <h1 class="script-names">Farah <span style="font-size: 0.7em;">❤</span> Tarek</h1>
-            
-            <div class="photo-container">
-                <img src="notre-photo.jpg" alt="Farah & Tarek" class="couple-photo">
-            </div>
-            
-            <p style="font-family: 'Cinzel'; font-weight: 700; font-size: 1rem;">Samedi 11 Avril 2026</p>
-            
-            <span class="event-time">09:45</span>
-            <a href="http://googleusercontent.com/maps.google.com/9" target="_blank" class="maps-link">Mairie d'Asnières 📍</a>
-
-            <span class="event-time">13:45</span>
-            <a href="https://share.google/ATM6Xe4TJUj33lnAm" target="_blank" class="maps-link">L'Arganier Paris 🍽️</a>
-            
-            <div id="timer" style="margin: 25px 0; font-family: 'Cinzel'; letter-spacing: 3px; font-size: 1.2rem; color: var(--gold); font-weight: 700;"></div>
-
-            <a href="https://www.google.com/calendar/render?action=TEMPLATE&text=Mariage+Farah+et+Tarek&dates=20260411T074500Z/20260411T160000Z&details=Mairie+Asnieres+puis+Déjeuner+L'Arganier" target="_blank" class="cal-btn">Ajouter à l'agenda</a>
-
-            <p style="font-family: 'Montserrat'; font-style: italic; font-size: 0.75rem; margin: 40px 10px 15px; color: var(--gold);">Nous vous remercions du fond du cœur de partager ce moment avec nous.</p>
-
-            <div class="rsvp-form">
-                <form action="https://formspree.io/f/xaqdvqyk" method="POST">
-                    <select name="Réponse" id="attendance" required>
-                        <option value="">Confirmation</option>
-                        <option value="Oui">Présent(e)</option>
-                        <option value="Non">Absent(e)</option>
-                    </select>
-
-                    <div id="guest-details" style="display:none;">
-                        <select id="count" name="Nombre de personnes">
-                            <option value="1">Moi uniquement</option>
-                            <option value="2">Accompagné(e)</option>
-                            <option value="3">3 personnes</option>
-                            <option value="4">4 personnes</option>
-                            <option value="5">5 personnes</option>
-                        </select>
-                        <div id="names-list"></div>
-                    </div>
-                    <button type="submit">Confirmer ma présence</button>
-                </form>
-            </div>
+<main id="main-content" class="hammered">
+    <div class="inner-frame">
+        <p style="font-style: italic; font-size: 0.9rem;">L'union de deux âmes</p>
+        <p style="font-family: 'Cinzel'; font-size: 0.75rem; letter-spacing: 3px; text-transform: uppercase;">Jusqu'à notre dernier souffle</p>
+        
+        <h1 class="script-names">Farah <span style="font-size: 0.7em;">❤</span> Tarek</h1>
+        
+        <div class="photo-container">
+            <img src="notre-photo.jpg" alt="Farah & Tarek" class="couple-photo">
         </div>
+        
+        <p style="font-family: 'Cinzel'; font-weight: 700; font-size: 1.1rem;">Samedi 11 Avril 2026</p>
+        
+        <span class="event-time">09:45</span>
+        <a href="https://maps.google.com/?q=Mairie+d+Asnieres+sur+Seine" target="_blank" class="maps-link">Mairie d'Asnières 📍</a>
+
+        <span class="event-time">13:45</span>
+        <a href="https://share.google/ATM6Xe4TJUj33lnAm" target="_blank" class="maps-link">L'Arganier Paris 🍽️</a>
+        
+        <div id="timer" style="margin: 25px 0; font-family: 'Cinzel'; letter-spacing: 3px; font-size: 1.3rem; color: var(--gold); font-weight: 700;"></div>
+
+        <a href="https://www.google.com/calendar/render?action=TEMPLATE&text=Mariage+Farah+et+Tarek&dates=20260411T074500Z/20260411T160000Z" target="_blank" class="cal-btn">Ajouter à l'agenda</a>
+
+        <p style="font-family: 'Montserrat'; font-style: italic; font-size: 0.8rem; margin: 30px 10px 10px; color: var(--gold); line-height: 1.6;">Nous vous remercions du fond du cœur de partager ce moment avec nous.</p>
+
+        <form action="https://formspree.io/f/xaqdvqyk" method="POST" style="max-width: 300px; margin: 20px auto 0;">
+            <select name="Réponse" id="attendance" style="width: 100%; padding: 15px; border: none; border-bottom: 1px solid #ccc; background: transparent; margin-bottom: 15px; font-family: 'Montserrat';">
+                <option value="">Confirmation</option>
+                <option value="Oui">Présent(e)</option>
+                <option value="Non">Absent(e)</option>
+            </select>
+            <div id="guest-details" style="display:none;">
+                <select id="count" name="Nombre" style="width: 100%; padding: 15px; border: none; border-bottom: 1px solid #ccc; background: transparent; margin-bottom: 15px; font-family: 'Montserrat';">
+                    <option value="1">Moi uniquement</option>
+                    <option value="2">Accompagné(e)</option>
+                    <option value="3">3 personnes</option>
+                    <option value="4">4 personnes</option>
+                    <option value="5">5 personnes</option>
+                </select>
+                <div id="names-list"></div>
+            </div>
+            <button type="submit">Confirmer ma présence</button>
+        </form>
     </div>
 </main>
 
@@ -260,11 +223,16 @@
         const music = document.getElementById('bgMusic');
         document.getElementById('envelope').classList.add('open');
         music.play().catch(e => {});
+        
         setTimeout(() => {
             document.getElementById('envelope-wrapper').style.opacity = '0';
             setTimeout(() => {
                 document.getElementById('envelope-wrapper').style.display = 'none';
                 document.getElementById('main-content').style.display = 'block';
+                
+                // --- RÉACTIVATION DU SCROLL ---
+                document.body.style.overflow = 'auto'; 
+                
                 createDust();
             }, 1000);
         }, 1200);
@@ -289,6 +257,7 @@
             const inp = document.createElement('input');
             inp.type = 'text'; inp.name = `Nom Invité ${i}`;
             inp.placeholder = `Nom complet ${i}`;
+            inp.style.width = '100%'; inp.style.padding = '15px'; inp.style.border = 'none'; inp.style.borderBottom = '1px solid #ccc'; inp.style.background = 'transparent'; inp.style.marginBottom = '15px';
             inp.required = true;
             list.appendChild(inp);
         }
@@ -302,10 +271,10 @@
             d.style.left = Math.random() * 100 + '%';
             d.style.top = '-50px';
             d.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
-            let size = (Math.random() * 5 + 1) + 'px'; 
+            let size = (Math.random() * 4 + 1) + 'px';
             d.style.width = size; d.style.height = size;
             d.style.animationDuration = (Math.random() * 6 + 4) + 's';
-            d.style.animationDelay = (Math.random() * 12) + 's';
+            d.style.animationDelay = (Math.random() * 10) + 's';
             d.style.opacity = Math.random() * 0.8 + 0.2;
             document.body.appendChild(d);
         }
