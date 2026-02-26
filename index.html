@@ -64,6 +64,7 @@
 
         .envelope.open::before { transform: rotateX(180deg); z-index: 1; }
 
+        /* SCELLEMENT AVEC SCINTILLEMENT */
         .seal {
             position: absolute;
             top: 175px; left: 50%;
@@ -79,9 +80,27 @@
             font-family: 'Cinzel', serif;
             font-size: 1.6rem;
             box-shadow: 0 10px 20px rgba(0,0,0,0.2);
+            overflow: hidden;
         }
 
-        /* --- CARTE D'INVITATION --- */
+        .seal::after {
+            content: "";
+            position: absolute;
+            top: -50%; left: -50%;
+            width: 200%; height: 200%;
+            background: linear-gradient(to bottom right, rgba(255,255,255,0) 0%, rgba(255,255,255,0.4) 50%, rgba(255,255,255,0) 100%);
+            transform: rotate(45deg);
+            animation: shimmer 3s infinite;
+        }
+
+        @keyframes shimmer {
+            0% { transform: translateX(-100%) rotate(45deg); }
+            100% { transform: translateX(100%) rotate(45deg); }
+        }
+
+        .envelope.open .seal { opacity: 0; transform: translateX(-50%) scale(0.2); }
+
+        /* --- CARTE --- */
         #main-content {
             display: none;
             width: 95%;
@@ -117,10 +136,8 @@
 
         @keyframes goldShine { to { background-position: 200% center; } }
 
-        /* PHOTO GRAND FORMAT */
         .couple-photo {
-            width: 320px;
-            height: 320px;
+            width: 320px; height: 320px;
             object-fit: cover;
             border-radius: 50%;
             border: 1px solid var(--gold);
@@ -129,71 +146,43 @@
             box-shadow: 0 20px 40px rgba(0,0,0,0.1);
         }
 
-        /* TEXTES NOIRS ACCENTUÉS */
-        .info-title {
-            font-family: 'Montserrat', sans-serif;
-            font-weight: 500;
-            text-transform: lowercase;
-            font-style: italic;
-            font-size: 1.1rem;
+        /* TEXTES ACCENTUÉS */
+        .info-title { font-style: italic; font-size: 1.1rem; color: var(--deep-black); margin-bottom: 5px; }
+        .info-bold { font-family: 'Cinzel'; font-weight: 700; font-size: 1.1rem; color: var(--deep-black); margin-top: 10px; }
+        
+        /* LIEN GOOGLE MAPS */
+        .maps-link {
+            display: inline-block;
             color: var(--deep-black);
-            margin-bottom: 5px;
-        }
-
-        .info-bold {
-            font-family: 'Cinzel', serif;
-            letter-spacing: 3px;
-            font-weight: 700;
-            font-size: 1.1rem;
-            color: var(--deep-black);
-            margin-top: 10px;
-        }
-
-        .info-details {
-            font-family: 'Cinzel', serif;
-            letter-spacing: 2px;
-            font-weight: 400;
+            text-decoration: none;
+            font-family: 'Cinzel';
             font-size: 0.9rem;
-            color: var(--deep-black);
             margin-top: 8px;
+            border-bottom: 1px solid var(--gold);
+            transition: 0.3s;
         }
+        .maps-link:hover { color: var(--gold); }
 
-        /* RSVP */
+        /* BOUTON CALENDRIER */
+        .cal-btn {
+            display: inline-block;
+            margin-top: 15px;
+            padding: 8px 15px;
+            border: 1px solid var(--gold);
+            color: var(--gold);
+            text-decoration: none;
+            font-size: 0.7rem;
+            font-family: 'Cinzel';
+            letter-spacing: 2px;
+            transition: 0.3s;
+        }
+        .cal-btn:hover { background: var(--gold); color: white; }
+
         .rsvp-form { margin: 50px auto 0; max-width: 350px; }
+        select, input { width: 100%; padding: 18px; border: none; border-bottom: 1px solid rgba(0,0,0,0.2); background: transparent; font-family: 'Montserrat'; font-weight: 500; font-size: 0.8rem; color: var(--deep-black); text-transform: uppercase; text-align-last: center; margin-bottom: 15px; outline: none; }
+        button { width: 100%; padding: 20px; background: var(--gold); color: white; border: none; letter-spacing: 5px; text-transform: uppercase; font-size: 0.8rem; font-weight: 700; cursor: pointer; transition: 0.5s; }
+        button:hover { background: var(--deep-black); }
 
-        select, input {
-            width: 100%;
-            padding: 18px;
-            border: none;
-            border-bottom: 1px solid rgba(0, 0, 0, 0.2);
-            background: transparent;
-            font-family: 'Montserrat';
-            font-weight: 500;
-            font-size: 0.8rem;
-            color: var(--deep-black);
-            text-transform: uppercase;
-            text-align-last: center;
-            margin-bottom: 15px;
-            outline: none;
-        }
-
-        button {
-            width: 100%;
-            padding: 20px;
-            background: var(--gold);
-            color: white;
-            border: none;
-            letter-spacing: 5px;
-            text-transform: uppercase;
-            font-size: 0.8rem;
-            font-weight: 700;
-            cursor: pointer;
-            transition: 0.5s;
-        }
-
-        button:hover { background: var(--deep-black); letter-spacing: 7px; }
-
-        /* PLUIE D'OR */
         .gold-dust { position: fixed; border-radius: 50%; pointer-events: none; z-index: -1; animation: drift linear infinite; }
         @keyframes drift { to { transform: translateY(110vh) rotate(360deg); opacity: 0; } }
     </style>
@@ -215,17 +204,22 @@
     <div class="gold-border">
         <div class="inner-frame">
             <p class="info-title">L'union de deux âmes</p>
-            
             <h1 class="script-names">Farah & Tarek</h1>
-            
             <img src="notre-photo.jpg" alt="Farah & Tarek" class="couple-photo">
             
             <div style="width: 50px; height: 1.5px; background: var(--gold); margin: 30px auto;"></div>
             
             <p class="info-bold">Samedi 11 Avril 2026</p>
-            <p class="info-details">09:45 • Mairie d'Asnières-sur-Seine</p>
             
-            <div id="timer" style="margin: 30px 0; font-family: 'Cinzel'; letter-spacing: 3px; font-size: 1.2rem; color: var(--gold); font-weight: 700;"></div>
+            <a href="https://www.google.com/maps/search/?api=1&query=Mairie+Asnieres-sur-Seine" target="_blank" class="maps-link">
+                09:45 • Mairie d'Asnières-sur-Seine 📍
+            </a>
+            
+            <div id="timer" style="margin: 20px 0; font-family: 'Cinzel'; letter-spacing: 3px; font-size: 1.2rem; color: var(--gold); font-weight: 700;"></div>
+
+            <a href="https://www.google.com/calendar/render?action=TEMPLATE&text=Mariage+Farah+et+Tarek&dates=20260411T074500Z/20260411T120000Z&details=Cérémonie+à+la+mairie+d'Asnières-sur-Seine&location=Mairie+d'Asnières-sur-Seine&sf=true&output=xml" target="_blank" class="cal-btn">
+                Ajouter au calendrier
+            </a>
 
             <div class="rsvp-form">
                 <form action="https://formspree.io/f/xaqdvqyk" method="POST">
@@ -234,7 +228,6 @@
                         <option value="Oui">Présent(e) avec joie</option>
                         <option value="Non">Absent(e) avec regret</option>
                     </select>
-
                     <div id="guest-details" style="display:none;">
                         <select id="count" name="Nombre">
                             <option value="1">Moi uniquement</option>
@@ -243,7 +236,6 @@
                         </select>
                         <div id="names-list"></div>
                     </div>
-
                     <button type="submit">Confirmer ma présence</button>
                 </form>
             </div>
@@ -252,20 +244,15 @@
 </main>
 
 <script>
-    // Mot de passe
     window.onload = () => {
         let p = prompt("Code secret :");
-        if (p !== "FarahTarek2026") {
-            document.body.innerHTML = "";
-            window.location.reload();
-        }
+        if (p !== "FarahTarek2026") { document.body.innerHTML = ""; window.location.reload(); }
     };
 
-    // Ouverture
     function openInvite() {
         const music = document.getElementById('bgMusic');
         document.getElementById('envelope').classList.add('open');
-        music.play().catch(e => console.log("Interaction nécessaire"));
+        music.play();
         setTimeout(() => {
             document.getElementById('envelope-wrapper').style.opacity = '0';
             setTimeout(() => {
@@ -276,19 +263,14 @@
         }, 1200);
     }
 
-    // RSVP
     const att = document.getElementById('attendance');
     const guestDetails = document.getElementById('guest-details');
     const count = document.getElementById('count');
     const list = document.getElementById('names-list');
 
     att.onchange = function() {
-        if(this.value === 'Oui') {
-            guestDetails.style.display = 'block';
-            updateInputs();
-        } else {
-            guestDetails.style.display = 'none';
-        }
+        if(this.value === 'Oui') { guestDetails.style.display = 'block'; updateInputs(); }
+        else { guestDetails.style.display = 'none'; }
     };
 
     count.onchange = updateInputs;
@@ -306,7 +288,6 @@
         }
     }
 
-    // Création de 100 particules dorées
     function createDust() {
         const colors = ['#b38b4d', '#e2c275', '#ffffff'];
         for(let i=0; i<100; i++) {
@@ -323,7 +304,6 @@
         }
     }
 
-    // Timer
     const date = new Date("April 11, 2026 09:45:00").getTime();
     setInterval(() => {
         const diff = date - new Date().getTime();
