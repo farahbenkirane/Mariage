@@ -20,10 +20,9 @@
             background-color: #f2efea;
             font-family: 'Montserrat', sans-serif;
             min-height: 100vh;
-            display: block; /* Important pour le scroll */
         }
 
-        /* --- ENVELOPPE (FIXÉE PAR DESSUS TOUT) --- */
+        /* --- ENVELOPPE --- */
         #envelope-wrapper {
             position: fixed;
             top: 0; left: 0; width: 100%; height: 100%;
@@ -32,7 +31,7 @@
             justify-content: center;
             align-items: center;
             z-index: 9999;
-            transition: opacity 0.8s ease, visibility 0.8s;
+            transition: opacity 0.8s ease;
             padding: 20px;
         }
 
@@ -54,7 +53,6 @@
             background-image: var(--texture);
             clip-path: polygon(0% 0%, 0% 100%, 100% 100%, 100% 0%, 50% 45%);
             z-index: 3;
-            border-bottom: 1px solid rgba(0,0,0,0.05);
         }
 
         .flap {
@@ -71,19 +69,17 @@
 
         .envelope.open .flap { transform: rotateX(180deg); }
 
-        /* SCEAU ET TEXTE PARFAITEMENT CENTRÉS */
         .seal-group {
             position: absolute;
-            top: 50%; left: 50%;
-            transform: translate(-50%, -40%);
+            top: 50%; left: 0;
+            width: 100%;
             display: flex;
             flex-direction: column;
             align-items: center;
-            justify-content: center;
-            width: 100%;
+            transform: translateY(-40%);
             z-index: 10;
-            transition: 0.5s;
             pointer-events: none;
+            transition: 0.5s;
         }
 
         .seal {
@@ -94,7 +90,7 @@
             box-shadow: 2px 5px 15px rgba(0,0,0,0.2);
             font-family: 'Pinyon Script', cursive;
             color: white; font-size: 1.6rem;
-            margin-bottom: 12px;
+            margin-bottom: 15px;
         }
 
         .open-text {
@@ -108,9 +104,9 @@
             text-shadow: 0 0 10px white;
         }
 
-        .envelope.open .seal-group { opacity: 0; visibility: hidden; }
+        .envelope.open .seal-group { opacity: 0; }
 
-        /* --- CONTENU (CACHÉ AU DÉBUT) --- */
+        /* --- CONTENU --- */
         #main-content {
             display: none;
             width: 95%;
@@ -139,7 +135,7 @@
 
         .cal-btn { display: inline-block; margin: 20px 0; padding: 12px 18px; border: 1px solid var(--gold); color: var(--gold); text-decoration: none; font-size: 0.7rem; font-family: 'Cinzel'; letter-spacing: 2px; text-transform: uppercase; }
 
-        #submit-btn { width: 100%; padding: 18px; background: var(--gold); color: white; border: none; text-transform: uppercase; font-weight: 700; cursor: pointer; transition: 0.3s; letter-spacing: 1px; }
+        #submit-btn { width: 100%; padding: 18px; background: var(--gold); color: white; border: none; text-transform: uppercase; font-weight: 700; cursor: pointer; letter-spacing: 2px; }
 
         .gold-dust { position: fixed; border-radius: 50%; pointer-events: none; z-index: 10000; animation: drift linear infinite; }
         @keyframes drift { to { transform: translateY(110vh); opacity: 0; } }
@@ -176,99 +172,107 @@
         <p style="font-family: 'Cinzel'; font-weight: 700; font-size: 1.1rem;">Samedi 11 Avril 2026</p>
         
         <span class="event-time">09:45</span>
-        <a href="https://maps.google.com" target="_blank" class="maps-link">Mairie d'Asnières 📍</a>
+        <a href="https://maps.google.com/?q=Mairie+d+Asnieres+sur+Seine" target="_blank" class="maps-link">Mairie d'Asnières 📍</a>
 
         <span class="event-time">13:45</span>
         <a href="https://share.google/ATM6Xe4TJUj33lnAm" target="_blank" class="maps-link">L'Arganier Paris 🍽️</a>
         
         <div id="timer" style="margin: 25px 0; font-family: 'Cinzel'; letter-spacing: 3px; font-size: 1.3rem; color: var(--gold); font-weight: 700;"></div>
 
-        <a href="#" class="cal-btn">Ajouter à l'agenda</a>
+        <a href="https://www.google.com/calendar/render?action=TEMPLATE&text=Mariage+Farah+et+Tarek&dates=20260411T074500Z/20260411T160000Z" target="_blank" class="cal-btn">Ajouter à l'agenda</a>
 
         <p style="font-family: 'Montserrat'; font-style: italic; font-size: 0.8rem; margin: 20px 0; color: var(--gold); line-height: 1.6;">Nous vous remercions du fond du cœur de partager ce moment avec nous.</p>
 
         <form action="https://formspree.io/f/xaqdvqyk" method="POST" style="max-width: 300px; margin: 0 auto;">
-            <select name="Réponse" id="attendance" style="width: 100%; padding: 15px; border: none; border-bottom: 1px solid #ccc; background: transparent; margin-bottom: 15px; outline: none;">
+            <select name="Réponse" id="attendance" required style="width: 100%; padding: 15px; border: none; border-bottom: 1px solid #ccc; background: transparent; margin-bottom: 15px; outline: none;">
                 <option value="">Confirmation</option>
                 <option value="Oui">Présent(e) avec joie</option>
                 <option value="Non">Absent(e) avec regret</option>
             </select>
+
             <div id="guest-details" style="display:none;">
-                <select id="count" name="Nombre" style="width: 100%; padding: 15px; border: none; border-bottom: 1px solid #ccc; background: transparent; margin-bottom: 15px; outline: none;">
-                    <option value="1">Moi uniquement</option>
-                    <option value="2">Accompagné(e) (2 personnes)</option>
-                    <option value="3">3 personnes</option>
-                    <option value="4">4 personnes</option>
-                    <option value="5">5 personnes</option>
-                </select>
+                <div id="presence-options" style="display:none;">
+                    <select id="count" name="Nombre d'invités" style="width: 100%; padding: 15px; border: none; border-bottom: 1px solid #ccc; background: transparent; margin-bottom: 15px; outline: none;">
+                        <option value="1">Moi uniquement</option>
+                        <option value="2">Accompagné(e) (2 personnes)</option>
+                        <option value="3">3 personnes</option>
+                        <option value="4">4 personnes</option>
+                        <option value="5">5 personnes</option>
+                    </select>
+                </div>
                 <div id="names-list"></div>
             </div>
-            <button type="submit" id="submit-btn">Confirmer ma présence</button>
+
+            <button type="submit" id="submit-btn">Confirmer</button>
         </form>
     </div>
 </main>
 
 <script>
-    // CODE SECRET
     window.onload = () => {
         let p = prompt("Code secret :");
         if (p !== "FarahTarek2026") { document.body.innerHTML = ""; window.location.reload(); }
     };
 
-    // OUVERTURE
     function openInvite() {
         const music = document.getElementById('bgMusic');
         document.getElementById('envelope').classList.add('open');
         music.play().catch(e => {});
         
         setTimeout(() => {
-            const wrapper = document.getElementById('envelope-wrapper');
-            wrapper.style.opacity = '0';
+            document.getElementById('envelope-wrapper').style.opacity = '0';
             setTimeout(() => {
-                wrapper.style.visibility = 'hidden';
+                document.getElementById('envelope-wrapper').style.display = 'none';
                 document.getElementById('main-content').style.display = 'block';
                 createDust();
             }, 800);
         }, 1000);
     }
 
-    // LOGIQUE RSVP & BOUTON
     const att = document.getElementById('attendance');
     const guestDetails = document.getElementById('guest-details');
+    const presenceOptions = document.getElementById('presence-options');
     const count = document.getElementById('count');
     const list = document.getElementById('names-list');
-    const submitBtn = document.getElementById('submit-btn');
 
-    function updateUI() {
-        if (att.value === 'Non') {
-            submitBtn.innerText = "Confirmer mon absence";
-            guestDetails.style.display = 'none';
-        } else if (att.value === 'Oui') {
+    att.onchange = function() {
+        if(this.value === 'Oui') {
             guestDetails.style.display = 'block';
-            submitBtn.innerText = (count.value === "1") ? "Je confirme ma présence" : "Nous confirmons notre présence";
+            presenceOptions.style.display = 'block';
             updateInputs();
+        } else if (this.value === 'Non') {
+            guestDetails.style.display = 'block';
+            presenceOptions.style.display = 'none';
+            // On force 1 seul champ pour l'absence
+            updateInputs(true);
         } else {
-            submitBtn.innerText = "Confirmer ma présence";
             guestDetails.style.display = 'none';
         }
-    }
+    };
 
-    function updateInputs() {
+    count.onchange = function() { updateInputs(); };
+
+    function updateInputs(isAbsence = false) {
         list.innerHTML = '';
-        let val = parseInt(count.value);
+        // Si absence, 1 champ. Sinon, le nombre sélectionné.
+        let val = isAbsence ? 1 : parseInt(count.value);
+        
         for(let i=1; i<=val; i++) {
             const inp = document.createElement('input');
-            inp.type = 'text'; inp.name = `Nom Invité ${i}`;
-            inp.placeholder = val === 1 ? "Votre nom complet" : `Nom complet invité ${i}`;
-            inp.style.width = '100%'; inp.style.padding = '15px'; inp.style.border = 'none'; inp.style.borderBottom = '1px solid #ccc'; inp.style.background = 'transparent'; inp.style.marginBottom = '15px'; inp.required = true;
+            inp.type = 'text'; 
+            inp.name = isAbsence ? `Nom personne absente` : `Nom Invité ${i}`;
+            inp.placeholder = (val === 1) ? "Votre nom complet" : `Nom complet invité ${i}`;
+            inp.style.width = '100%'; 
+            inp.style.padding = '15px'; 
+            inp.style.border = 'none'; 
+            inp.style.borderBottom = '1px solid #ccc'; 
+            inp.style.background = 'transparent'; 
+            inp.style.marginBottom = '15px'; 
+            inp.required = true;
             list.appendChild(inp);
         }
     }
 
-    att.onchange = updateUI;
-    count.onchange = updateUI;
-
-    // EFFET WAW
     function createDust() {
         const colors = ['#b38b4d', '#e2c275', '#ffffff', '#d4af37'];
         for(let i=0; i<500; i++) {
@@ -286,7 +290,6 @@
         }
     }
 
-    // TIMER
     const date = new Date("April 11, 2026 09:45:00").getTime();
     setInterval(() => {
         const diff = date - new Date().getTime();
