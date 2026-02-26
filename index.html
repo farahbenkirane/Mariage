@@ -22,175 +22,118 @@
             min-height: 100vh;
         }
 
+        /* --- SÉLECTEUR DE LANGUE --- */
+        .lang-switch {
+            position: fixed;
+            top: 20px; right: 20px;
+            z-index: 10001;
+            display: flex; gap: 8px;
+        }
+        .lang-btn {
+            background: rgba(255, 255, 255, 0.9); 
+            border: 1px solid var(--gold);
+            color: var(--gold); font-family: 'Cinzel';
+            font-size: 0.7rem; padding: 6px 10px;
+            cursor: pointer; transition: 0.3s;
+            border-radius: 2px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+        .lang-btn.active { background: var(--gold); color: white; }
+
         /* --- ENVELOPPE --- */
         #envelope-wrapper {
             position: fixed;
             top: 0; left: 0; width: 100%; height: 100%;
             background: #f2efea;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            z-index: 9999;
-            transition: opacity 0.8s ease;
-            padding: 20px;
+            display: flex; justify-content: center; align-items: center;
+            z-index: 9999; transition: opacity 0.8s ease; padding: 20px;
         }
-
         .envelope {
-            position: relative;
-            width: 100%;
-            max-width: 450px;
-            aspect-ratio: 3 / 2;
-            background-color: #ffffff;
-            background-image: var(--texture);
-            box-shadow: 0 30px 60px rgba(0,0,0,0.15);
-            cursor: pointer;
+            position: relative; width: 100%; max-width: 450px; aspect-ratio: 3 / 2;
+            background-color: #ffffff; background-image: var(--texture);
+            box-shadow: 0 30px 60px rgba(0,0,0,0.15); cursor: pointer;
         }
-
         .pocket {
-            position: absolute;
-            bottom: 0; left: 0; width: 100%; height: 100%;
-            background-color: #fcfaf7;
-            background-image: var(--texture);
-            clip-path: polygon(0% 0%, 0% 100%, 100% 100%, 100% 0%, 50% 45%);
-            z-index: 3;
+            position: absolute; bottom: 0; left: 0; width: 100%; height: 100%;
+            background-color: #fcfaf7; background-image: var(--texture);
+            clip-path: polygon(0% 0%, 0% 100%, 100% 100%, 100% 0%, 50% 45%); z-index: 3;
         }
-
         .flap {
-            position: absolute;
-            top: 0; left: 0; width: 100%; height: 100%;
-            background-color: #ffffff;
-            background-image: var(--texture);
-            clip-path: polygon(0 0, 50% 50%, 100% 0);
-            z-index: 4;
-            transition: transform 1s ease-in-out;
-            transform-origin: top;
+            position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+            background-color: #ffffff; background-image: var(--texture);
+            clip-path: polygon(0 0, 50% 50%, 100% 0); z-index: 4;
+            transition: transform 1s ease-in-out; transform-origin: top;
             filter: drop-shadow(0 5px 5px rgba(0,0,0,0.1));
         }
-
         .envelope.open .flap { transform: rotateX(180deg); }
 
         .seal-group {
-            position: absolute;
-            top: 50%; left: 0;
-            width: 100%;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            transform: translateY(-40%);
-            z-index: 10;
-            pointer-events: none;
-            transition: 0.5s;
+            position: absolute; top: 50%; left: 0; width: 100%;
+            display: flex; flex-direction: column; align-items: center;
+            transform: translateY(-40%); z-index: 10; pointer-events: none; transition: 0.5s;
         }
-
         .seal {
             width: 80px; height: 80px;
             background: radial-gradient(circle at 30% 30%, #e2c275, #b38b4d, #8a6d3b);
             border-radius: 48% 52% 45% 55% / 55% 45% 55% 45%;
             display: flex; justify-content: center; align-items: center;
             box-shadow: 2px 5px 15px rgba(0,0,0,0.2);
-            font-family: 'Pinyon Script', cursive;
-            color: white; font-size: 1.6rem;
-            margin-bottom: 15px;
+            font-family: 'Pinyon Script', cursive; color: white; font-size: 1.6rem; margin-bottom: 15px;
         }
-
         .open-text {
-            color: var(--gold);
-            font-family: 'Cinzel';
-            font-size: 0.75rem;
-            letter-spacing: 3px;
-            font-weight: bold;
-            text-transform: uppercase;
-            text-align: center;
-            text-shadow: 0 0 10px white;
+            color: var(--gold); font-family: 'Cinzel'; font-size: 0.75rem;
+            letter-spacing: 3px; font-weight: bold; text-transform: uppercase;
+            text-align: center; text-shadow: 0 0 10px white;
         }
-
         .envelope.open .seal-group { opacity: 0; }
 
         /* --- CONTENU --- */
         #main-content {
-            display: none;
-            width: 95%;
-            max-width: 600px;
-            margin: 40px auto;
-            background: var(--ivoire);
-            background-image: var(--texture);
-            padding: 40px 15px;
-            text-align: center;
-            box-shadow: 0 20px 50px rgba(0,0,0,0.05);
-            border: 1px solid rgba(179, 139, 77, 0.2);
+            display: none; width: 95%; max-width: 600px;
+            margin: 60px auto 40px; background: var(--ivoire); background-image: var(--texture);
+            padding: 40px 15px; text-align: center;
+            box-shadow: 0 20px 50px rgba(0,0,0,0.05); border: 1px solid rgba(179, 139, 77, 0.2);
         }
-
-        .inner-frame { border: 1px solid var(--gold); padding: 30px 10px; }
+        .inner-frame { border: 1px solid var(--gold); padding: 30px 10px; position: relative; }
         .script-names { font-family: 'Pinyon Script', cursive; font-size: clamp(35px, 8vw, 70px); background: var(--gold-gradient); -webkit-background-clip: text; -webkit-text-fill-color: transparent; margin: 15px 0; }
-
-        .photo-container { 
-            width: 240px; height: 240px; margin: 20px auto; 
-            border-radius: 50%; border: 2px solid var(--gold); 
-            padding: 5px; background: white; overflow: hidden; 
-        }
+        .photo-container { width: 240px; height: 240px; margin: 20px auto; border-radius: 50%; border: 2px solid var(--gold); padding: 5px; background: white; overflow: hidden; }
         .couple-photo { width: 100%; height: 100%; object-fit: cover; border-radius: 50%; }
-
         .event-time { font-family: 'Cinzel'; font-weight: 700; color: var(--gold); font-size: 1.1rem; display: block; margin-top: 15px; }
         .maps-link { display: inline-block; color: #1a1a1a; text-decoration: none; font-family: 'Cinzel'; font-size: 0.85rem; border-bottom: 1px solid var(--gold); margin-bottom: 10px; }
-
         .cal-btn { display: inline-block; margin: 20px 0; padding: 12px 18px; border: 1px solid var(--gold); color: var(--gold); text-decoration: none; font-size: 0.7rem; font-family: 'Cinzel'; letter-spacing: 2px; text-transform: uppercase; }
 
-        /* --- SECTION CAGNOTTE --- */
-        .cagnotte-section {
-            margin: 40px 0;
-            padding: 20px;
-            background: rgba(179, 139, 77, 0.05);
-            border-radius: 5px;
-        }
-        .cagnotte-text {
-            font-family: 'Montserrat';
-            font-size: 0.85rem;
-            color: #444;
-            font-style: italic;
-            line-height: 1.6;
-            margin-bottom: 20px;
-        }
-        .cagnotte-btn {
-            display: inline-block;
-            padding: 12px 25px;
-            background: var(--gold);
-            color: white;
-            text-decoration: none;
-            font-family: 'Cinzel';
-            font-size: 0.75rem;
-            letter-spacing: 2px;
-            text-transform: uppercase;
-            font-weight: bold;
-            transition: 0.3s;
-        }
+        .cagnotte-section { margin: 40px 0; padding: 20px; background: rgba(179, 139, 77, 0.05); border-radius: 5px; }
+        .cagnotte-text { font-family: 'Montserrat'; font-size: 0.85rem; color: #444; font-style: italic; line-height: 1.6; margin-bottom: 20px; }
+        .cagnotte-btn { display: inline-block; padding: 12px 25px; background: var(--gold); color: white; text-decoration: none; font-family: 'Cinzel'; font-size: 0.75rem; letter-spacing: 2px; text-transform: uppercase; font-weight: bold; }
 
         #submit-btn { width: 100%; padding: 18px; background: var(--gold); color: white; border: none; text-transform: uppercase; font-weight: 700; cursor: pointer; letter-spacing: 2px; }
-
         .gold-dust { position: fixed; border-radius: 50%; pointer-events: none; z-index: 10000; animation: drift linear infinite; }
         @keyframes drift { to { transform: translateY(110vh); opacity: 0; } }
     </style>
 </head>
 <body>
 
-<audio id="bgMusic" loop>
-    <source src="musique.m4a" type="audio/x-m4a">
-</audio>
+<audio id="bgMusic" loop><source src="musique.m4a" type="audio/x-m4a"></audio>
+
+<div class="lang-switch">
+    <button class="lang-btn active" id="btn-fr" onclick="switchLang('fr')">FR</button>
+    <button class="lang-btn" id="btn-en" onclick="switchLang('en')">EN</button>
+</div>
 
 <div id="envelope-wrapper">
-    <div class="envelope" id="envelope" onclick="openInvite()">
-        <div class="flap"></div>
-        <div class="pocket"></div>
+    <div class="envelope" id="envelope" onclick="checkCodeAndOpen()">
+        <div class="flap"></div><div class="pocket"></div>
         <div class="seal-group">
             <div class="seal">F & T</div>
-            <p class="open-text">Ouvrir l'invitation</p>
+            <p class="open-text" id="txt-open">Ouvrir l'invitation</p>
         </div>
     </div>
 </div>
 
 <main id="main-content">
     <div class="inner-frame">
-        <p style="font-style: italic; font-size: 0.9rem;">L'union de deux âmes</p>
-        <p style="font-family: 'Cinzel'; font-size: 0.75rem; letter-spacing: 3px; text-transform: uppercase;">Jusqu'à notre dernier souffle</p>
+        <p id="txt-union" style="font-style: italic; font-size: 0.9rem;">L'union de deux âmes</p>
+        <p id="txt-breath" style="font-family: 'Cinzel'; font-size: 0.75rem; letter-spacing: 3px; text-transform: uppercase;">Jusqu'à notre dernier souffle</p>
         
         <h1 class="script-names">Farah <span style="font-size: 0.7em;">❤</span> Tarek</h1>
         
@@ -198,39 +141,39 @@
             <img src="notre-photo.jpg" alt="Farah & Tarek" class="couple-photo">
         </div>
         
-        <p style="font-family: 'Cinzel'; font-weight: 700; font-size: 1.1rem;">Samedi 11 Avril 2026</p>
+        <p id="txt-date" style="font-family: 'Cinzel'; font-weight: 700; font-size: 1.1rem;">Samedi 11 Avril 2026</p>
         
         <span class="event-time">09:45</span>
-        <a href="https://maps.google.com/?q=Mairie+d+Asnieres+sur+Seine" target="_blank" class="maps-link">Mairie d'Asnières 📍</a>
+        <a href="https://maps.google.com/?q=Mairie+d+Asnieres+sur+Seine" target="_blank" class="maps-link" id="txt-mairie">Mairie d'Asnières 📍</a>
 
         <span class="event-time">13:45</span>
-        <a href="https://share.google/ATM6Xe4TJUj33lnAm" target="_blank" class="maps-link">L'Arganier Paris 🍽️</a>
+        <a href="https://share.google/ATM6Xe4TJUj33lnAm" target="_blank" class="maps-link" id="txt-restaurant">L'Arganier Paris 🍽️</a>
         
         <div id="timer" style="margin: 25px 0; font-family: 'Cinzel'; letter-spacing: 3px; font-size: 1.3rem; color: var(--gold); font-weight: 700;"></div>
 
-        <a href="https://www.google.com/calendar/render?action=TEMPLATE&text=Mariage+Farah+et+Tarek&dates=20260411T074500Z/20260411T160000Z" target="_blank" class="cal-btn">Ajouter à l'agenda</a>
+        <a href="https://www.google.com/calendar/render?action=TEMPLATE&text=Mariage+Farah+et+Tarek&dates=20260411T074500Z/20260411T160000Z" target="_blank" class="cal-btn" id="txt-agenda">Ajouter à l'agenda</a>
 
         <div class="cagnotte-section">
-            <p class="cagnotte-text">
+            <p class="cagnotte-text" id="txt-cagnotte-desc">
                 "Votre présence à nos côtés est le plus beau cadeau que vous puissiez nous offrir. Si vous souhaitez toutefois contribuer à nos futurs projets de vie, une petite attention dans cette cagnotte nous touchera énormément."
             </p>
-            <a href="https://www.leetchi.com/fr/c/mariage-farah-tarek-9314860" target="_blank" class="cagnotte-btn">Participer à nos projets</a>
+            <a href="https://www.leetchi.com/fr/c/mariage-farah-tarek-9314860" target="_blank" class="cagnotte-btn" id="txt-cagnotte-btn">Participer à nos projets</a>
         </div>
 
-        <p style="font-family: 'Montserrat'; font-style: italic; font-size: 0.8rem; margin: 20px 0; color: var(--gold); line-height: 1.6;">Nous vous remercions du fond du cœur de partager ce moment avec nous.</p>
+        <p id="txt-thanks" style="font-family: 'Montserrat'; font-style: italic; font-size: 0.8rem; margin: 20px 0; color: var(--gold); line-height: 1.6;">Nous vous remercions du fond du cœur de partager ce moment avec nous.</p>
 
         <form action="https://formspree.io/f/xaqdvqyk" method="POST" style="max-width: 300px; margin: 0 auto;">
             <select name="Réponse" id="attendance" required style="width: 100%; padding: 15px; border: none; border-bottom: 1px solid #ccc; background: transparent; margin-bottom: 15px; outline: none;">
-                <option value="">Confirmation</option>
-                <option value="Oui">Présent(e) avec joie</option>
-                <option value="Non">Absent(e) avec regret</option>
+                <option value="" id="opt-confirm">Confirmation</option>
+                <option value="Oui" id="opt-yes">Présent(e) avec joie</option>
+                <option value="Non" id="opt-no">Absent(e) avec regret</option>
             </select>
 
             <div id="guest-details" style="display:none;">
                 <div id="presence-options" style="display:none;">
                     <select id="count" name="Nombre d'invités" style="width: 100%; padding: 15px; border: none; border-bottom: 1px solid #ccc; background: transparent; margin-bottom: 15px; outline: none;">
-                        <option value="1">Moi uniquement</option>
-                        <option value="2">Accompagné(e) (2 personnes)</option>
+                        <option value="1" id="opt-me">Moi uniquement</option>
+                        <option value="2" id="opt-plus">Accompagné(e)</option>
                         <option value="3">3 personnes</option>
                         <option value="4">4 personnes</option>
                         <option value="5">5 personnes</option>
@@ -238,31 +181,113 @@
                 </div>
                 <div id="names-list"></div>
             </div>
-
             <button type="submit" id="submit-btn">Confirmer</button>
         </form>
     </div>
 </main>
 
 <script>
-    window.onload = () => {
-        let p = prompt("Code secret :");
-        if (p !== "FarahTarek2026") { document.body.innerHTML = ""; window.location.reload(); }
+    const translations = {
+        fr: {
+            pass: "Code secret :",
+            open: "Ouvrir l'invitation",
+            union: "L'union de deux âmes",
+            breath: "Jusqu'à notre dernier souffle",
+            date: "Samedi 11 Avril 2026",
+            mairie: "Mairie d'Asnières 📍",
+            restaurant: "L'Arganier Paris 🍽️",
+            agenda: "Ajouter à l'agenda",
+            cagnotteDesc: '"Votre présence à nos côtés est le plus beau cadeau que vous puissiez nous offrir. Si vous souhaitez toutefois contribuer à nos futurs projets de vie, une petite attention dans cette cagnotte nous touchera énormément."',
+            cagnotteBtn: "Participer à nos projets",
+            thanks: "Nous vous remercions du fond du cœur de partager ce moment avec nous.",
+            confirm: "Confirmation",
+            yes: "Présent(e) avec joie",
+            no: "Absent(e) avec regret",
+            me: "Moi uniquement",
+            plus: "Accompagné(e)",
+            submit: "Confirmer",
+            placeholderSingle: "Votre nom complet",
+            placeholderMulti: "Nom complet invité"
+        },
+        en: {
+            pass: "Secret Code:",
+            open: "Open Invitation",
+            union: "The union of two souls",
+            breath: "Until our very last breath",
+            date: "Saturday, April 11th, 2026",
+            mairie: "Asnières Town Hall 📍",
+            restaurant: "L'Arganier Paris 🍽️",
+            agenda: "Add to Calendar",
+            cagnotteDesc: '"Your presence by our side is the greatest gift of all. However, should you wish to contribute to our future projects, a contribution to this fund would be deeply appreciated."',
+            cagnotteBtn: "Contribute to our projects",
+            thanks: "We thank you from the bottom of our hearts for sharing this moment with us.",
+            confirm: "RSVP",
+            yes: "Attending with joy",
+            no: "Declining with regret",
+            me: "Just me",
+            plus: "Plus one",
+            submit: "Confirm",
+            placeholderSingle: "Your full name",
+            placeholderMulti: "Guest full name"
+        }
     };
 
-    function openInvite() {
-        const music = document.getElementById('bgMusic');
-        document.getElementById('envelope').classList.add('open');
-        music.play().catch(e => {});
+    let currentLang = 'fr';
+    let isUnlocked = false;
+
+    function switchLang(lang) {
+        currentLang = lang;
+        const t = translations[lang];
         
-        setTimeout(() => {
-            document.getElementById('envelope-wrapper').style.opacity = '0';
+        document.getElementById('txt-open').innerText = t.open;
+        document.getElementById('txt-union').innerText = t.union;
+        document.getElementById('txt-breath').innerText = t.breath;
+        document.getElementById('txt-date').innerText = t.date;
+        document.getElementById('txt-mairie').innerText = t.mairie;
+        document.getElementById('txt-restaurant').innerText = t.restaurant;
+        document.getElementById('txt-agenda').innerText = t.agenda;
+        document.getElementById('txt-cagnotte-desc').innerText = t.cagnotteDesc;
+        document.getElementById('txt-cagnotte-btn').innerText = t.cagnotteBtn;
+        document.getElementById('txt-thanks').innerText = t.thanks;
+        document.getElementById('opt-confirm').innerText = t.confirm;
+        document.getElementById('opt-yes').innerText = t.yes;
+        document.getElementById('opt-no').innerText = t.no;
+        document.getElementById('opt-me').innerText = t.me;
+        document.getElementById('opt-plus').innerText = t.plus;
+        document.getElementById('submit-btn').innerText = t.submit;
+        
+        document.querySelectorAll('.lang-btn').forEach(b => b.classList.remove('active'));
+        if(lang === 'fr') document.getElementById('btn-fr').classList.add('active');
+        else document.getElementById('btn-en').classList.add('active');
+        
+        if(document.getElementById('attendance').value !== "") {
+            updateInputs(document.getElementById('attendance').value === 'Non');
+        }
+    }
+
+    // FONCTION SÉCURISÉE AVEC LANGUE
+    function checkCodeAndOpen() {
+        if (isUnlocked) return;
+        
+        const t = translations[currentLang];
+        let p = prompt(t.pass);
+        
+        if (p === "FarahTarek2026") {
+            isUnlocked = true;
+            const music = document.getElementById('bgMusic');
+            document.getElementById('envelope').classList.add('open');
+            music.play().catch(e => {});
             setTimeout(() => {
-                document.getElementById('envelope-wrapper').style.display = 'none';
-                document.getElementById('main-content').style.display = 'block';
-                createDust();
-            }, 800);
-        }, 1000);
+                document.getElementById('envelope-wrapper').style.opacity = '0';
+                setTimeout(() => {
+                    document.getElementById('envelope-wrapper').style.display = 'none';
+                    document.getElementById('main-content').style.display = 'block';
+                    createDust();
+                }, 800);
+            }, 1000);
+        } else {
+            window.location.reload();
+        }
     }
 
     const att = document.getElementById('attendance');
@@ -273,16 +298,10 @@
 
     att.onchange = function() {
         if(this.value === 'Oui') {
-            guestDetails.style.display = 'block';
-            presenceOptions.style.display = 'block';
-            updateInputs();
+            guestDetails.style.display = 'block'; presenceOptions.style.display = 'block'; updateInputs();
         } else if (this.value === 'Non') {
-            guestDetails.style.display = 'block';
-            presenceOptions.style.display = 'none';
-            updateInputs(true);
-        } else {
-            guestDetails.style.display = 'none';
-        }
+            guestDetails.style.display = 'block'; presenceOptions.style.display = 'none'; updateInputs(true);
+        } else { guestDetails.style.display = 'none'; }
     };
 
     count.onchange = function() { updateInputs(); };
@@ -290,12 +309,11 @@
     function updateInputs(isAbsence = false) {
         list.innerHTML = '';
         let val = isAbsence ? 1 : parseInt(count.value);
-        
+        const t = translations[currentLang];
         for(let i=1; i<=val; i++) {
             const inp = document.createElement('input');
-            inp.type = 'text'; 
-            inp.name = isAbsence ? `Nom personne absente` : `Nom Invité ${i}`;
-            inp.placeholder = (val === 1) ? "Votre nom complet" : `Nom complet invité ${i}`;
+            inp.type = 'text'; inp.name = isAbsence ? `Nom Absence` : `Nom Invité ${i}`;
+            inp.placeholder = (val === 1) ? t.placeholderSingle : `${t.placeholderMulti} ${i}`;
             inp.style.width = '100%'; inp.style.padding = '15px'; inp.style.border = 'none'; inp.style.borderBottom = '1px solid #ccc'; inp.style.background = 'transparent'; inp.style.marginBottom = '15px'; inp.required = true;
             list.appendChild(inp);
         }
@@ -304,17 +322,13 @@
     function createDust() {
         const colors = ['#b38b4d', '#e2c275', '#ffffff', '#d4af37'];
         for(let i=0; i<500; i++) {
-            let d = document.createElement('div');
-            d.className = 'gold-dust';
-            d.style.left = Math.random() * 100 + '%';
-            d.style.top = '-50px';
+            let d = document.createElement('div'); d.className = 'gold-dust';
+            d.style.left = Math.random() * 100 + '%'; d.style.top = '-50px';
             d.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
             let size = (Math.random() * 4 + 1) + 'px';
             d.style.width = size; d.style.height = size;
-            d.style.animationDuration = (Math.random() * 5 + 3) + 's';
-            d.style.animationDelay = (Math.random() * 10) + 's';
-            d.style.opacity = Math.random();
-            document.body.appendChild(d);
+            d.style.animationDuration = (Math.random() * 5 + 3) + 's'; d.style.animationDelay = (Math.random() * 10) + 's';
+            d.style.opacity = Math.random(); document.body.appendChild(d);
         }
     }
 
@@ -324,7 +338,7 @@
         const d = Math.floor(diff / (1000 * 60 * 60 * 24));
         const h = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
         const m = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
-        document.getElementById('timer').innerText = d + "j • " + h + "h • " + m + "m";
+        document.getElementById('timer').innerText = `${d}j • ${h}h • ${m}m`;
     }, 1000);
 </script>
 
