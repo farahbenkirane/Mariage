@@ -160,15 +160,20 @@
             z-index: 2;
         }
 
-        /* --- LIENS ET BOUTONS --- */
+        /* --- PROGRAMME --- */
+        .event-step { margin-bottom: 20px; }
+        .event-time { font-family: 'Cinzel'; font-weight: 700; color: var(--gold); font-size: 1.1rem; }
+        
         .maps-link {
             display: inline-block; color: var(--deep-black); text-decoration: none;
-            font-family: 'Cinzel'; font-size: 0.95rem; margin-top: 10px;
-            border-bottom: 1px solid var(--gold); font-weight: 700;
+            font-family: 'Cinzel'; font-size: 0.9rem; margin-top: 5px;
+            border-bottom: 1px solid rgba(179, 139, 77, 0.4); font-weight: 500;
+            transition: 0.3s;
         }
+        .maps-link:hover { color: var(--gold); border-bottom-color: var(--gold); }
 
         .cal-btn {
-            display: inline-block; margin-top: 20px; padding: 10px 20px;
+            display: inline-block; margin-top: 25px; padding: 10px 20px;
             border: 1px solid var(--gold); color: var(--gold);
             text-decoration: none; font-size: 0.75rem; font-family: 'Cinzel';
             letter-spacing: 2px; text-transform: uppercase;
@@ -176,7 +181,7 @@
         }
         .cal-btn:hover { background: var(--gold); color: white; }
 
-        /* --- FORMULAIRE RSVP --- */
+        /* --- RSVP --- */
         .thanks-msg {
             font-family: 'Montserrat'; font-style: italic; font-size: 0.85rem;
             margin: 40px 0 15px; color: var(--gold);
@@ -219,15 +224,25 @@
                 <img src="notre-photo.jpg" alt="Farah & Tarek" class="couple-photo">
             </div>
             
-            <p style="font-family: 'Cinzel'; font-weight: 700; font-size: 1.1rem;">Samedi 11 Avril 2026</p>
+            <p style="font-family: 'Cinzel'; font-weight: 700; font-size: 1.1rem; margin-bottom: 25px;">Samedi 11 Avril 2026</p>
             
-            <a href="https://maps.google.com/?q=Mairie+d'Asnières-sur-Seine" target="_blank" class="maps-link">
-                09:45 • Mairie d'Asnières-sur-Seine 📍
-            </a>
-            
-            <div id="timer" style="margin: 20px 0; font-family: 'Cinzel'; letter-spacing: 3px; font-size: 1.3rem; color: var(--gold); font-weight: 700;"></div>
+            <div class="event-step">
+                <span class="event-time">09:45</span><br>
+                <a href="https://maps.google.com/?q=Mairie+d'Asnières-sur-Seine" target="_blank" class="maps-link">
+                    Cérémonie • Mairie d'Asnières-sur-Seine 📍
+                </a>
+            </div>
 
-            <a href="https://www.google.com/calendar/render?action=TEMPLATE&text=Mariage+Farah+et+Tarek&dates=20260411T074500Z/20260411T120000Z&details=Cérémonie+à+la+mairie+d'Asnières-sur-Seine&location=Mairie+d'Asnières-sur-Seine" target="_blank" class="cal-btn">
+            <div class="event-step">
+                <span class="event-time">13:45</span><br>
+                <a href="https://share.google/ATM6Xe4TJUj33lnAm" target="_blank" class="maps-link">
+                    Déjeuner • Restaurant L'Arganier Paris 🍽️
+                </a>
+            </div>
+            
+            <div id="timer" style="margin: 25px 0; font-family: 'Cinzel'; letter-spacing: 3px; font-size: 1.3rem; color: var(--gold); font-weight: 700;"></div>
+
+            <a href="https://www.google.com/calendar/render?action=TEMPLATE&text=Mariage+Farah+et+Tarek&dates=20260411T074500Z/20260411T160000Z&details=09:45+Cérémonie+à+la+mairie+d'Asnières-sur-Seine%0A13:45+Déjeuner+au+Restaurant+L'Arganier+Paris&location=L'Arganier+Paris+12+Rue+Feydeau+75002+Paris" target="_blank" class="cal-btn">
                 Ajouter à mon agenda
             </a>
 
@@ -267,7 +282,7 @@
     function openInvite() {
         const music = document.getElementById('bgMusic');
         document.getElementById('envelope').classList.add('open');
-        music.play().catch(e => console.log("Musique attendue"));
+        music.play().catch(e => console.log("Interaction utilisateur requise"));
         setTimeout(() => {
             document.getElementById('envelope-wrapper').style.opacity = '0';
             setTimeout(() => {
